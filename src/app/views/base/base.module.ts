@@ -52,6 +52,7 @@ import { TabsComponent } from './tabs/tabs.component';
 
 // Components Routing
 import { BaseRoutingModule } from './base-routing.module';
+import {AccountInfoComponent} from "../../components/account-info/account-info.component";
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { BaseRoutingModule } from './base-routing.module';
     PopoverModule,
     TableModule,
     DocsComponentsModule,
+    AccountInfoComponent,
   ],
   declarations: [
     AccordionsComponent,
@@ -99,7 +101,7 @@ import { BaseRoutingModule } from './base-routing.module';
     TablesComponent,
     TooltipsComponent,
     TabsComponent,
-    PlaceholdersComponent,
+    PlaceholdersComponent
   ],
 })
 export class BaseModule {}

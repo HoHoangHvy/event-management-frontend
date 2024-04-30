@@ -1,0 +1,51 @@
+<c-row>
+  <c-col [md]="12">
+    <c-card>
+      <c-card-header>User Information</c-card-header>
+      <c-card-body>
+        <form cForm class="row g-3">
+          <c-col [md]="6">
+            <label cLabel for="inputFullName">Full Name</label>
+            <input cFormControl id="inputFullName"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputUserName">User Name</label>
+            <input cFormControl id="inputUserName"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputEmail">Email</label>
+            <input cFormControl id="inputEmail"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputPhone">Phone</label>
+            <input cFormControl id="inputPhone"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputGender">Gender</label>
+            <input cFormControl id="inputGender"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputEmpStatus">Emp Status</label>
+            <select id="inputEmpStatus" aria-label="Default select example" cSelect>
+              <option value="working">Working</option>
+              <option value="stopped">Stopped</option>
+            </select>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputDob">Date of birth</label>
+            <input cFormControl id="inputDob"/>
+          </c-col>
+          <c-col [md]="6">
+            <label cLabel for="inputStartDate">Start date</label>
+            <input cFormControl id="inputStartDate"/>
+          </c-col>
+          <c-col [xs]="12">
+            <label cLabel for="inputPassword">Password</label>
+            <input cFormControl id="inputPassword"/>
+          </c-col>
+        </form>
+
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

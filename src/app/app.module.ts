@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import {BrowserModule, provideClientHydration, Title} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -11,10 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Import app component
 import { AppComponent } from './app.component';
-
+import { routes } from "./app-routing.module";
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
-
+import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 import {
   AvatarModule,
   BadgeModule,
@@ -32,11 +34,14 @@ import {
   ProgressModule,
   SharedModule,
   SidebarModule,
-  TabsModule,
+  TabsModule, ToasterComponent, ToastModule,
   UtilitiesModule
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {provideRouter} from "@angular/router";
+import {CoreUIFormsModule} from "./views/forms/forms.module";
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -72,7 +77,11 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    HttpClientModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(),
+    CoreUIFormsModule
   ],
   providers: [
     {
@@ -80,7 +89,11 @@ const APP_CONTAINERS = [
       useClass: HashLocationStrategy
     },
     IconSetService,
-    Title
+    Title,
+    provideClientHydration(),
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch()),
+    provideRouter(routes)
   ],
   bootstrap: [AppComponent]
 })
