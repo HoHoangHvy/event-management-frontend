@@ -1,13 +1,16 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, Input} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Module } from 'src/app/models/module/module'
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import {brandSet, flagSet, freeSet} from '@coreui/icons';
 import {IconSetService} from "@coreui/icons-angular";
+import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
+import {ToastrService} from "ngx-toastr";
 @Component({
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
-  providers: [IconSetService],
+  providers: [IconSetService,MessageService,ClassToggleService,Router],
 })
 export class DefaultHeaderComponent extends HeaderComponent {
 
@@ -17,18 +20,39 @@ export class DefaultHeaderComponent extends HeaderComponent {
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
   public moduleList: Module[];
+  public displayModuleList: Module[];
   public restModuleList: Module[];
-  constructor(private classToggler: ClassToggleService, public iconSet: IconSetService) {
+  constructor(private classToggler: ClassToggleService, public iconSet: IconSetService, private cdr: ChangeDetectorRef, public router: Router, private toastr: ToastrService) {
     super();
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
-    const userJson = localStorage.getItem('user');
-    if (userJson) {
-      const user = JSON.parse(userJson);
-      this.moduleList = user.moduleList ? user.moduleList as Module[] : [];
-      this.restModuleList = user.restModuleList ? user.restModuleList as Module[] : [];
+    const moduleListJson = localStorage.getItem('moduleList');
+    if (moduleListJson) {
+      this.moduleList = JSON.parse(moduleListJson);
+      let startPos = Math.floor((window.innerWidth * (2/3)) / 100);
+      this.displayModuleList = this.moduleList.slice(0, startPos)
+      this.restModuleList = this.moduleList.slice(startPos, this.moduleList.length);
     } else {
       this.moduleList = [];
+      this.displayModuleList = [];
       this.restModuleList = [];
     }
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    // Get the new inner width of the window
+    const newInnerWidth = (event.target as Window).innerWidth;
+    let startPos = Math.floor((newInnerWidth * (2/3)) / 100);
+    console.log(startPos)
+    console.log(this.moduleList)
+    this.displayModuleList = this.moduleList.slice(0,startPos)
+    this.restModuleList = this.moduleList.slice(startPos, this.moduleList.length);
+    this.cdr.detectChanges();
+  }
+  logout() {
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('moduleList');
+    this.router.navigateByUrl('/login').then(() => {
+      this.toastr.success('Logout successfully!', 'Success') ;
+    });
   }
 }

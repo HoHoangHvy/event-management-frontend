@@ -1,19 +1,8 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
   <c-container [fluid]="true">
-    <button
-      toggle="visible"
-      cHeaderToggler
-      [cSidebarToggle]="sidebarId"
-      class="ps-1"
-    >
-      <svg cIcon
-        name="cilMenu"
-        size="lg"
-      ></svg>
-    </button>
     <c-nav variant="pills" class="d-none d-lg-flex me-auto">
-      <div *ngFor="let module of moduleList">
+      <div *ngFor="let module of displayModuleList">
         <c-nav-item>
           <a cNavLink routerLink="{{ module.route }}" routerLinkActive="active">
             <svg cIcon class="me-2" name="{{ module.icon }}"></svg>
@@ -72,7 +61,7 @@
         <hr cDropdownDivider/>
       </li>
       <li>
-        <a routerLink="./" cDropdownItem>
+        <a (click)="logout()" cDropdownItem>
           <svg cIcon class="me-2" name="cilAccountLogout"></svg>
           Log out
         </a>

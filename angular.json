@@ -37,9 +37,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/scss/styles.scss",
+              "node_modules/cropperjs/dist/cropper.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.js"
+            ],
             "allowedCommonJsDependencies": [
               "chart.js"
             ]
@@ -79,7 +83,10 @@
               "buildTarget": "coreui-free-angular-admin-template:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -102,9 +109,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/scss/styles.scss",
+              "node_modules/cropperjs/dist/cropper.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.js"
+            ]
           }
         }
       }

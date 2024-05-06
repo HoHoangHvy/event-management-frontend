@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -12,11 +12,12 @@ import { ImageCropperComponent } from './image-cropper/image-cropper.component';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: AvatarComponent
+      useExisting: AvatarUploadComponent
     }
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
-export class AvatarComponent implements OnInit, ControlValueAccessor {
+export class AvatarUploadComponent implements OnInit, ControlValueAccessor {
   file: string = '';
 
   constructor(public dialog: MatDialog) {}

@@ -9,6 +9,7 @@ import { Page500Component } from './page500/page500.component';
 import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ToastModule} from "primeng/toast";
 
 
 @NgModule({
@@ -18,17 +19,18 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     Page404Component,
     Page500Component
   ],
-  imports: [
-    CommonModule,
-    PagesRoutingModule,
-    CardModule,
-    ButtonModule,
-    GridModule,
-    IconModule,
-    FormModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        PagesRoutingModule,
+        CardModule,
+        ButtonModule,
+        GridModule,
+        IconModule,
+        FormModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ToastModule
+    ]
 })
 export class PagesModule {
 }

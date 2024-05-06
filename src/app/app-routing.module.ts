@@ -6,6 +6,12 @@ import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+import {
+  AuthGuardService as AuthGuard
+} from './services/Auth/auth-guard.service';
+import {
+  AuthGuardLoginService as AuthGuardLogin
+} from './services/Auth/auth-guard-login.service';
 
 export const routes: Routes = [
   {
@@ -19,6 +25,7 @@ export const routes: Routes = [
     data: {
       title: 'Home'
     },
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
@@ -89,6 +96,7 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [AuthGuardLogin],
     data: {
       title: 'Login Page'
     }

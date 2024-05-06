@@ -3,8 +3,12 @@ import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@a
 import {BrowserModule, provideClientHydration, Title} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { AvatarModule } from './components/avatar/avatar.module';
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import {
-  AvatarModule,
+  AvatarComponent,
   BadgeModule,
   BreadcrumbModule,
   ButtonGroupModule,
@@ -42,20 +46,27 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideRouter} from "@angular/router";
 import {CoreUIFormsModule} from "./views/forms/forms.module";
+import {AuthServiceService} from "./services/Auth/auth-service.service";
+import {AuthGuardService} from "./services/Auth/auth-guard.service";
+import {AuthGuardLoginService} from "./services/Auth/auth-guard-login.service";
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
-  DefaultLayoutComponent
+  DefaultLayoutComponent,
 ];
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
+    AvatarModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    AvatarModule,
     BreadcrumbModule,
     FooterModule,
     DropdownModule,
@@ -81,13 +92,16 @@ const APP_CONTAINERS = [
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
-    CoreUIFormsModule
+    CoreUIFormsModule,
+    AvatarComponent
   ],
   providers: [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
+    AuthGuardService,
+    AuthGuardLoginService,
     IconSetService,
     Title,
     provideClientHydration(),

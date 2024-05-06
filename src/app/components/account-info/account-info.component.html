@@ -1,56 +1,128 @@
 <c-row>
   <c-col [md]="12">
-    <c-card>
-      <c-card-header>User Information</c-card-header>
-      <c-card-body>
-        <form cForm class="row g-3">
-          <c-col [md]="6">
-            <label cLabel for="inputFullName">Full Name</label>
-            <input cFormControl id="inputFullName"/>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputUserName">User Name</label>
-            <input cFormControl id="inputUserName"/>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputEmail">Email</label>
-            <input cFormControl id="inputEmail"/>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputPhone">Phone</label>
-            <input cFormControl id="inputPhone"/>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputGender">Gender</label>
-            <input cFormControl id="inputGender"/>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputEmpStatus">Emp Status</label>
-            <select id="inputEmpStatus" aria-label="Default select example" cSelect>
-              <option value="working">Working</option>
-              <option value="stopped">Stopped</option>
-            </select>
-          </c-col>
-          <c-col [md]="6">
-            <mat-form-field>
-              <mat-label>Choose a date</mat-label>
-              <input matInput [matDatepicker]="picker">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          </c-col>
-          <c-col [md]="6">
-            <label cLabel for="inputStartDate">Start date</label>
-            <input cFormControl id="inputStartDate"/>
-          </c-col>
-          <c-col [xs]="12">
-            <label cLabel for="inputPassword">Password</label>
-            <input cFormControl id="inputPassword"/>
-          </c-col>
-        </form>
-
-      </c-card-body>
-    </c-card>
+    <c-nav variant="tabs">
+      <c-nav-item>
+        <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="0" cNavLink>
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          Profile
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="1" cNavLink>
+          <svg cIcon class="me-2" name="cilColorBorder"></svg>
+          Account
+        </a>
+      </c-nav-item>
+    </c-nav>
+    <c-tab-content #accountInfo="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+      <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+        <div class="account-info-container">
+          <form  cForm class="row g-3 needs-validation" #customStylesForm="ngForm"
+                 [gutter]="3"
+                 [validated]="customStylesValidated"
+                 novalidate
+                 (ngSubmit)="onSubmitEmployee()">
+            <c-col [md]="12" style="display: flex">
+              <app-avatar cFormControl class="avatar-picker"></app-avatar>
+              <div class="full-name-container">
+                <label cLabel for="inputFullName">Full Name</label>
+                <span id="inputFullName">{{currentUser.fullName}}</span>
+              </div>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputEmail">Email</label>
+              <input cFormControl id="inputEmail" [(ngModel)]="currentUser.email" name="email" required/>
+              <c-form-feedback [valid]="false">Please enter a email.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputPhone">Phone</label>
+              <input cFormControl id="inputPhone" [(ngModel)]="currentUser.phone" name="phone" required/>
+              <c-form-feedback [valid]="false">Please enter a phone.</c-form-feedback>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputEmpLevel">Level</label>
+              <input cFormControl id="inputEmpLevel" disabled [(ngModel)]="currentUser.empLevel" name="empLevel" readOnly/>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputRole">Role</label>
+              <input cFormControl id="inputRole" disabled [(ngModel)]="currentUser.role.name" name="role" readOnly/>
+            </c-col>
+            <c-col [md]="4">
+              <label cLabel for="inputGender">Gender</label>
+              <input cFormControl id="inputGender" disabled [(ngModel)]="currentUser.gender" name="gender" readOnly/>
+            </c-col>
+            <c-col [md]="4">
+              <label cLabel for="inputEmpStatus">Emp Status</label>
+              <input cFormControl id="inputEmpStatus" disabled [(ngModel)]="currentUser.empStatus" name="empStatus" readOnly/>
+            </c-col>
+            <c-col [md]="4">
+              <label cLabel for="inputDepartment">Department</label>
+              <input cFormControl id="inputDepartment" disabled [(ngModel)]="currentUser.department" name="department" readOnly/>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputDob">Date of birth</label>
+              <div class="date-picker-container">
+                <input cFormControl id="inputDob" [matDatepicker]="dobPicker" [(ngModel)]="currentUser.dob" name="dob" [value]="currentUser.dob">
+                <mat-datepicker-toggle matIconSuffix [for]="dobPicker" class="date-picker-toggle"></mat-datepicker-toggle>
+                <mat-datepicker #dobPicker></mat-datepicker>
+              </div>
+            </c-col>
+            <c-col [md]="6">
+              <label cLabel for="inputStartDate">Start date</label>
+              <div class="date-picker-container">
+                <input readonly cFormControl id="inputStartDate" disabled [matDatepicker]="startDatePicker" [(ngModel)]="currentUser.startDate" name="startDate" [value]="currentUser.startDate">
+                <mat-datepicker-toggle matIconSuffix [for]="startDatePicker" class="date-picker-toggle" disabled></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+              </div>
+            </c-col>
+            <c-col [md]="12">
+              <button cButton color="primary" type="submit">Save</button>
+              <p-confirmDialog></p-confirmDialog>
+              <p-toast [life]="5000"></p-toast>
+            </c-col>
+          </form>
+        </div>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+        <p-confirmDialog></p-confirmDialog>
+        <p-toast [life]="5000"></p-toast>
+        <div class="account-info-container">
+          <form  cForm class="row g-3 needs-validation" #customStylesForm="ngForm"
+                 [gutter]="3"
+                 [validated]="customStylesValidated"
+                 novalidate
+                 (ngSubmit)="onSubmitChangePassword()">
+            <c-col [md]="6">
+              <label cLabel for="inputUserName">User Name</label>
+              <input cFormControl id="inputUserName" [(ngModel)]="currentUser.userName" name="userName"/>
+            </c-col>
+            <c-col [xs]="6">
+            </c-col>
+            <c-col [xs]="6">
+              <label cLabel for="inputOldPassword">Old Password</label>
+              <input #inputOldPassword type="password" [(ngModel)]="oldPassword" cFormControl id="inputOldPassword" required name="oldPassword"/>
+              <c-form-feedback #oldPasswordFeedback id="oldPasswordFeedback" [valid]="false">Please enter old password.</c-form-feedback>
+            </c-col>
+            <c-col [xs]="6">
+            </c-col>
+            <c-col [xs]="6">
+              <label cLabel for="inputNewPassword">New Password</label>
+              <input cFormControl [(ngModel)]="newPassword" id="inputNewPassword" type="password" required name="newPassword"/>
+              <c-form-feedback [valid]="false">Please enter a new password.</c-form-feedback>
+            </c-col>
+            <c-col [xs]="6">
+            </c-col>
+            <c-col [xs]="6">
+              <label cLabel for="inputReenterPassword">Re-enter Password</label>
+              <input type="password" [(ngModel)]="confirmPassword" cFormControl id="inputReenterPassword" required name="confirmPassword"/>
+              <c-form-feedback [valid]="false">Please re-enter a new password.</c-form-feedback>
+            </c-col>
+            <c-col [md]="12">
+              <button cButton color="primary" type="submit">Change</button>
+            </c-col>
+          </form>
+        </div>
+      </c-tab-pane>
+    </c-tab-content>
   </c-col>
 </c-row>
