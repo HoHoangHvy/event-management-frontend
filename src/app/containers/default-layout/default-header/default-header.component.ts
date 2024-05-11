@@ -15,6 +15,7 @@ import {ToastrService} from "ngx-toastr";
 export class DefaultHeaderComponent extends HeaderComponent {
 
   @Input() sidebarId: string = "sidebar";
+  hideDropdown: boolean = false;
   public icons!: [string, string[]][];
   public newMessages = new Array(4)
   public newTasks = new Array(5)
@@ -36,16 +37,17 @@ export class DefaultHeaderComponent extends HeaderComponent {
       this.displayModuleList = [];
       this.restModuleList = [];
     }
+    if(this.restModuleList.length == 0) this.hideDropdown = true;
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     // Get the new inner width of the window
     const newInnerWidth = (event.target as Window).innerWidth;
     let startPos = Math.floor((newInnerWidth * (2/3)) / 100);
-    console.log(startPos)
-    console.log(this.moduleList)
     this.displayModuleList = this.moduleList.slice(0,startPos)
     this.restModuleList = this.moduleList.slice(startPos, this.moduleList.length);
+    if(this.restModuleList.length == 0) this.hideDropdown = true;
+    else this.hideDropdown = false;
     this.cdr.detectChanges();
   }
   logout() {

@@ -17,6 +17,8 @@ import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { PlaceholdersComponent } from './placeholders/placeholders.component';
 import {AccountInfoComponent} from "../../components/account-info/account-info.component";
+import {ListViewComponent} from "../../components/list-view/list-view.component";
+import {UpdateViewComponent} from "../../components/update-view/update-view.component";
 
 const routes: Routes = [
   {
@@ -141,7 +143,42 @@ const routes: Routes = [
         data: {
           title: 'Account Info',
         },
-      }
+      },
+      {
+        path: 'list/:moduleName',
+        component: ListViewComponent,
+        data: {
+          title: 'List View', // Static title or another suitable static value
+        },
+      },
+      {
+        path: 'detail/:moduleName/:id',
+        component: UpdateViewComponent,
+        data: {
+          title: 'Detail View', // Static title or another suitable static value
+        },
+      },
+      // {
+      //   path: 'employees',
+      //   component: ListViewComponent,
+      //   data: {
+      //     title: 'Employees',
+      //   },
+      // },
+      // {
+      //   path: 'tasks',
+      //   component: ListViewComponent,
+      //   data: {
+      //     title: 'Tasks',
+      //   },
+      // },
+      // {
+      //   path: 'payments',
+      //   component: ListViewComponent,
+      //   data: {
+      //     title: 'Payments',
+      //   },
+      // }
     ],
   },
 ];

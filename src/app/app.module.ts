@@ -104,9 +104,9 @@ const APP_CONTAINERS = [
     AuthGuardLoginService,
     IconSetService,
     Title,
-    provideClientHydration(),
-    provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
+    // provideClientHydration(),
+    // provideAnimationsAsync(),
+    // provideHttpClient(withFetch()),
     provideRouter(routes)
   ],
   bootstrap: [AppComponent]

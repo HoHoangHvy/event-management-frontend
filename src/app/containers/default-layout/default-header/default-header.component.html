@@ -71,7 +71,7 @@
   </c-dropdown>
 </ng-template>
 <ng-template #moduleDropdown>
-  <c-dropdown alignment="end" variant="nav-item">
+  <c-dropdown alignment="end" variant="nav-item"  *ngIf="!hideDropdown">
     <button
       cButton
       color=""

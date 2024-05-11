@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 // CoreUI Modules
 import {
   AccordionModule,
   BadgeModule,
   BreadcrumbModule,
+  ButtonGroupModule,
   ButtonModule,
   CardModule,
   CarouselModule,
@@ -27,13 +28,17 @@ import {
   TooltipModule,
   UtilitiesModule
 } from '@coreui/angular';
+import {IconComponent, IconModule, IconSetService} from '@coreui/icons-angular';
 
-import { IconModule } from '@coreui/icons-angular';
+// Material UI Components
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
-// utils
+// Utils
 import { DocsComponentsModule } from '@docs-components/docs-components.module';
 
-// views
+// Components
 import { AccordionsComponent } from './accordion/accordions.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { CardsComponent } from './cards/cards.component';
@@ -49,42 +54,61 @@ import { SpinnersComponent } from './spinners/spinners.component';
 import { TablesComponent } from './tables/tables.component';
 import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
-
-// Components Routing
+import { ListViewComponent } from '../../components/list-view/list-view.component';
 import { BaseRoutingModule } from './base-routing.module';
-import {AccountInfoComponent} from "../../components/account-info/account-info.component";
+
+// Icons
+import { brandSet, flagSet, freeSet } from '@coreui/icons';
+import {MatSort, MatSortHeader} from "@angular/material/sort";
+import {UpdateViewComponent} from "../../components/update-view/update-view.component";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   imports: [
-    CommonModule,
-    BaseRoutingModule,
+    // CoreUI Modules
     AccordionModule,
     BadgeModule,
     BreadcrumbModule,
+    ButtonGroupModule,
     ButtonModule,
     CardModule,
     CollapseModule,
-    GridModule,
-    UtilitiesModule,
-    SharedModule,
-    ListGroupModule,
-    IconModule,
-    ListGroupModule,
-    PlaceholderModule,
-    ProgressModule,
-    SpinnerModule,
-    TabsModule,
-    NavModule,
-    TooltipModule,
-    CarouselModule,
-    FormModule,
-    ReactiveFormsModule,
     DropdownModule,
+    FormModule,
+    GridModule,
+    ListGroupModule,
+    NavModule,
     PaginationModule,
+    PlaceholderModule,
     PopoverModule,
+    ProgressModule,
+    SharedModule,
+    SpinnerModule,
     TableModule,
+    TabsModule,
+    TooltipModule,
+    UtilitiesModule,
+    CarouselModule,
     DocsComponentsModule,
-    AccountInfoComponent,
+
+    // Material Modules
+    MatTableModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+
+    // Angular Modules
+    CommonModule,
+    ReactiveFormsModule,
+
+    // Custom Module
+    BaseRoutingModule,
+    IconComponent,
+    MatSortHeader,
+    MatSort,
+    FormsModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   declarations: [
     AccordionsComponent,
@@ -95,13 +119,21 @@ import {AccountInfoComponent} from "../../components/account-info/account-info.c
     ListGroupsComponent,
     NavsComponent,
     PaginationsComponent,
+    PlaceholdersComponent,
     PopoversComponent,
     ProgressComponent,
     SpinnersComponent,
     TablesComponent,
     TooltipsComponent,
     TabsComponent,
-    PlaceholdersComponent
+    ListViewComponent,
+    UpdateViewComponent
   ],
+  providers: [IconSetService],
 })
-export class BaseModule {}
+export class BaseModule {
+  public icons!: [string, string[]][];
+  constructor(public iconSet: IconSetService) {
+    iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
+  }
+}

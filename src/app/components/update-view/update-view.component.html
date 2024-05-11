@@ -1,0 +1,35 @@
+<c-card>
+  <c-card-header>
+    {{ moduleName }} detail
+  </c-card-header>
+  <c-card-body>
+    <form cForm class="row g-3">
+      <c-col *ngFor="let col of displayedColumns" [md]="6">
+        <div *ngIf="col.isText">
+          <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}</label>
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]"/>
+        </div>
+        <div *ngIf="col.isSelect">
+          <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}</label>
+          <select cFormControl cSelect [(ngModel)]="detailObject[col.name]" id="select{{ col.name }}" name="{{col.name}}">
+            <option *ngFor="let option of col.options" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div *ngIf="col.isDate">
+          <label cLabel for="date{{ col.name }}">{{ labelList[col.name] }}</label>
+          <div class="date-picker-container">
+            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="detailObject[col.name]" name="{{ col.name }}" [value]="detailObject[col.name]">
+            <mat-datepicker-toggle matIconSuffix [for]="picker" class="date-picker-toggle"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+        </div>
+      </c-col>
+      <c-col [md]="12">
+        <button cButton color="primary" (click)="saveInfo()">Save</button>
+        <button id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
+      </c-col>
+    </form>
+    <p-confirmDialog></p-confirmDialog>
+    <p-toast [life]="5000"></p-toast>
+  </c-card-body>
+</c-card>

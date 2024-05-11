@@ -27,7 +27,6 @@ export class AuthServiceService {
   public isAuthenticated(): boolean {
     try {
       let token = localStorage.getItem('jwtToken');
-      console.log(token)
       if(token) {
         const decodedToken: any = jwtDecode(token);
         const currentTime = Date.now() / 1000;
