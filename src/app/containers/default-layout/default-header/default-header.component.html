@@ -51,7 +51,7 @@
           Profile
         </a>
       </li>
-      <li>
+      <li *ngIf="hideSetting">
         <a routerLink="./" cDropdownItem>
           <svg cIcon class="me-2" name="cilSettings"></svg>
           Settings

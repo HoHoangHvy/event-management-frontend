@@ -20,6 +20,10 @@ export class UserService {
     return this.currentUser.value;
   }
 
+  isAdmin(): boolean {
+    return <boolean>this.currentUser.value?.isAdmin;
+  }
+
   updateEmployee(user: User) : Observable<Object> {
     debugger
     const headers = new HttpHeaders({

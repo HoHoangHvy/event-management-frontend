@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LiveAnnouncer} from "@angular/cdk/a11y";;
 import {DetailService} from "../../services/crud/detail/detail.service";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-update-view',
@@ -16,7 +17,8 @@ export class UpdateViewComponent {
               private _liveAnnouncer: LiveAnnouncer,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private userService: UserService) { }
   moduleName: string | null = '';
   displayedColumns: any;
   labelList: any = {};
@@ -52,7 +54,7 @@ export class UpdateViewComponent {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
   getColumnsForModule(moduleName: string): any {
-    console.log(this.relatedOptions)
+    console.log(this.userService.isAdmin())
     const columns: any = {
       Employees: [
         {
@@ -60,18 +62,21 @@ export class UpdateViewComponent {
           isSelect: false,
           isDate: false,
           isText: true,
+          isDisabled: false
         },
         {
           name: 'phone',
           isSelect: false,
           isDate: false,
           isText: true,
+          isDisabled: false
         },
         {
           name: 'empLevel',
           isSelect: true,
           isDate: false,
           isText: false,
+          isDisabled: false,
           options: [
             {value: "Staff", label: "Staff"},
             {value: "Manager", label: "Manager"},
@@ -83,6 +88,7 @@ export class UpdateViewComponent {
           isSelect: true,
           isDate: false,
           isText: false,
+          isDisabled: false,
           options: this.relatedOptions.departmentId
         },
         {
@@ -90,6 +96,7 @@ export class UpdateViewComponent {
           isSelect: true,
           isDate: false,
           isText: false,
+          isDisabled: !this.userService.isAdmin(),
           options: this.relatedOptions.roleId
         },
         {
@@ -97,6 +104,7 @@ export class UpdateViewComponent {
           isSelect: true,
           isDate: false,
           isText: false,
+          isDisabled: false,
           options: [
             {value: "Male", label: "Male"},
             {value: "Male", label: "Male"},
@@ -107,6 +115,7 @@ export class UpdateViewComponent {
           isSelect: true,
           isDate: false,
           isText: false,
+          isDisabled: false,
           options: [
             {value: "Stopped", label: "Stopped"},
             {value: "Working", label: "Working"}
@@ -117,18 +126,21 @@ export class UpdateViewComponent {
           isSelect: false,
           isDate: true,
           isText: false,
+          isDisabled: false,
         },
         {
           name: 'startDate',
           isSelect: false,
           isDate: true,
           isText: false,
+          isDisabled: false,
         },
         {
           name: 'email',
           isSelect: false,
           isDate: false,
           isText: true,
+          isDisabled: false,
         },
       ]
     };

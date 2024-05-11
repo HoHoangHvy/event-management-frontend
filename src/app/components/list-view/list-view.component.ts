@@ -43,7 +43,7 @@ export class ListViewComponent {
     this.labelList = this.globalLabelList[this.moduleName] || {};
     this.listService.getListData(this.route.snapshot.paramMap.get('moduleName')).subscribe((res) => {
       console.log(res.data.listData.reverse())
-      this.dataSource = new MatTableDataSource<any>(res.data.listData.reverse());
+      this.dataSource = new MatTableDataSource<any>(res.data.listData);
       this.totalRecords = res.data.totalData;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
