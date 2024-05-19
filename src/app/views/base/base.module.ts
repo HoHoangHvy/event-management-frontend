@@ -28,7 +28,7 @@ import {
   TooltipModule,
   UtilitiesModule
 } from '@coreui/angular';
-import {IconComponent, IconModule, IconSetService} from '@coreui/icons-angular';
+import {IconComponent, IconDirective, IconModule, IconSetService} from '@coreui/icons-angular';
 
 // Material UI Components
 import { MatTableModule } from '@angular/material/table';
@@ -56,6 +56,7 @@ import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { ListViewComponent } from '../../components/list-view/list-view.component';
 import { BaseRoutingModule } from './base-routing.module';
+import { CalendarModule } from 'primeng/calendar';
 
 // Icons
 import { brandSet, flagSet, freeSet } from '@coreui/icons';
@@ -63,6 +64,14 @@ import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {UpdateViewComponent} from "../../components/update-view/update-view.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
+import {CreateViewComponent} from "../../components/create-view/create-view.component";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {AdminManagerComponent} from "../../components/admin-manager/admin-manager.component";
+import {RecordListComponent} from "../../components/record-list/record-list.component";
+import {PermissionComponent} from "../../components/permission/permission.component";
+import {NewFeedComponent} from "../../components/new-feed/new-feed.component";
+import {NewFeedContainerComponent} from "../../components/new-feed-container/new-feed-container.component";
+import {AvatarModule} from "../../components/avatar/avatar.module";
 
 @NgModule({
   imports: [
@@ -108,7 +117,10 @@ import {ToastModule} from "primeng/toast";
     MatSort,
     FormsModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    CalendarModule,
+    IconDirective,
+    AvatarModule
   ],
   declarations: [
     AccordionsComponent,
@@ -127,9 +139,15 @@ import {ToastModule} from "primeng/toast";
     TooltipsComponent,
     TabsComponent,
     ListViewComponent,
-    UpdateViewComponent
+    UpdateViewComponent,
+    CreateViewComponent,
+    AdminManagerComponent,
+    RecordListComponent,
+    PermissionComponent,
+    NewFeedComponent,
+    NewFeedContainerComponent
   ],
-  providers: [IconSetService],
+  providers: [IconSetService, MessageService, ConfirmationService],
 })
 export class BaseModule {
   public icons!: [string, string[]][];

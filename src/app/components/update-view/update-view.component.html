@@ -4,7 +4,7 @@
   </c-card-header>
   <c-card-body>
     <form cForm class="row g-3">
-      <c-col *ngFor="let col of displayedColumns" [md]="6">
+      <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
         <div *ngIf="col.isText">
           <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}</label>
           <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]" [disabled]="col.isDisabled"/>
@@ -22,6 +22,64 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker" class="date-picker-toggle"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </div>
+        </div>
+      </c-col>
+      <c-col [md]="12">
+        <div *ngIf="moduleName === 'Roles'">
+          <c-nav variant="tabs">
+            <c-nav-item>
+              <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="0" cNavLink>
+                <svg cIcon class="me-2" name="cilUser"></svg>
+                Permission
+              </a>
+            </c-nav-item>
+            <c-nav-item>
+              <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="1" cNavLink>
+                <svg cIcon class="me-2" name="cilColorBorder"></svg>
+                Users
+              </a>
+            </c-nav-item>
+          </c-nav>
+          <c-tab-content #accountInfo="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+            <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+              <div class="account-info-container">
+                <app-permission
+                  [permissionModel] = "permissionModel"
+                ></app-permission>
+              </div>
+            </c-tab-pane>
+            <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+              <div class="account-info-container">
+                <app-record-list-view
+                  [moduleName]="'Users'"
+                  [showHeader]="false"
+                  [filter] = "{'roleName': detailObject.name}"
+                ></app-record-list-view>
+              </div>
+            </c-tab-pane>
+          </c-tab-content>
+        </div>
+
+        <div *ngIf="moduleName === 'Departments'">
+          <c-nav variant="tabs">
+            <c-nav-item>
+              <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="0" cNavLink>
+                <svg cIcon class="me-2" name="cilUser"></svg>
+                Employees
+              </a>
+            </c-nav-item>
+          </c-nav>
+          <c-tab-content #accountInfo="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+            <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+              <div class="account-info-container">
+                <app-record-list-view
+                  [moduleName]="'Employees'"
+                  [showHeader]="false"
+                  [filter] = "{'departmentName': detailObject.name}"
+                ></app-record-list-view>
+              </div>
+            </c-tab-pane>
+          </c-tab-content>
         </div>
       </c-col>
       <c-col [md]="12">

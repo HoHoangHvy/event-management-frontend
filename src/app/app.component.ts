@@ -46,33 +46,6 @@ export class AppComponent implements OnInit {
         return;
       }
     });
-    // if(localStorage.getItem('jwtToken')) {
-    //   this.authService.getMe().subscribe((res: any) => {
-    //       let dobArray = res.data.user.employee.dob;
-    //       let dobDate: Date = new Date(dobArray[0], dobArray[1] - 1, dobArray[2]);
-    //       let startDateArray = res.data.user.employee.startDate;
-    //       let startDate: Date = new Date(startDateArray[0], startDateArray[1] - 1, startDateArray[2]);
-    //       let user = new User(res.data.user.id, res.data.user.employee.name,
-    //         res.data.user.userName, res.data.user.status, dobDate,
-    //         res.data.user.role, res.data.user.employee.email, res.data.user.employee.phone,
-    //         res.data.user.employee.gender, res.data.user.employee.status, res.data.user.employee.id,
-    //         res.data.user.employee.empLevel, res.data.user.employee.department, startDate);
-    //       this.userService.setCurrentUser(user);
-    //       localStorage.setItem('moduleList', JSON.stringify(res.data.moduleList));
-    //
-    //     },
-    //     (errorCatcher) => {
-    //       if (errorCatcher.status == 401) {
-    //         this.router.navigateByUrl('/login');
-    //         if (localStorage.getItem('jwtToken')) {
-    //           this.toastr.error('Your token has expired', 'Unauthorized', {timeOut: 5000});
-    //         }
-    //       }
-    //     });
-    // } else {
-    //   this.router.navigateByUrl('/login').then(() => {
-    //     this.toastr.error('Please login before proceeding', 'Unauthorized', {timeOut: 5000});
-    //   });
-    // }
+
   }
 }

@@ -1,0 +1,21 @@
+<button cButton color="primary" class="floating-button" [cTooltip]="'Create a post'" type="submit"
+        (click)="createPost()">
+  <svg cIcon class="create-button" name="cilColorBorder"></svg>
+</button>
+<span *ngIf="totalRecords == 0">You have no news yet</span>
+<c-card class="mb-4" *ngFor="let post of postList">
+  <c-card-header class="post-header {{post.type}}">
+    <span>{{ post.type }}</span> : <span class="post-title"> {{ post.name }}</span> <span class="created-by"
+                                                                                          style="font-style: italic;"> - by {{ post.createdByName }}  </span>
+  </c-card-header>
+  <c-card-body>
+    <p cCardText>
+      {{ post.content }}
+    </p>
+  </c-card-body>
+  <div class="post-footer">
+    <footer class="blockquote-footer pull-right" style="float: right">
+      <cite title="Source Title">{{ post.dateEntered }} </cite>
+    </footer>
+  </div>
+</c-card>

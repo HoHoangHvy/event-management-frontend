@@ -1,0 +1,45 @@
+<c-card>
+  <c-card-header>
+    Create {{ moduleName }}
+  </c-card-header>
+  <c-card-body>
+    <form cForm class="row g-3" [gutter]="3"
+          [validated]="validated"
+          novalidate
+          cForm cRow
+          class="needs-validation">
+      <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
+        <div *ngIf="col.isText">
+          <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="createObject[col.name]" name="{{col.name}}" [value]="createObject[col.name]" [disabled]="col.isDisabled" [required]="col.isRequired" />
+        </div>
+        <div *ngIf="col.isSelect">
+          <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
+          <select cFormControl cSelect [(ngModel)]="createObject[col.name]" id="select{{ col.name }}" name="{{col.name}}" [disabled]="col.isDisabled">
+            <option *ngFor="let option of col.options" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div *ngIf="col.isDate">
+          <label cLabel for="date{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
+          <div class="date-picker-container">
+            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="createObject[col.name]" name="{{ col.name }}" [value]="createObject[col.name]" [disabled]="col.isDisabled" [required]="col.isRequired" >
+            <mat-datepicker-toggle matIconSuffix [for]="picker" class="date-picker-toggle"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+        </div>
+      </c-col>
+      <c-col [md]="12">
+        <div *ngIf="moduleName === 'Roles'">
+          <app-permission
+            [permissionModel] = "permissionModel"
+          ></app-permission>
+        </div>
+      </c-col>
+      <c-col [md]="12">
+        <button cButton color="primary" (click)="saveInfo()">Save</button>
+      </c-col>
+    </form>
+    <p-confirmDialog></p-confirmDialog>
+    <p-toast [life]="5000"></p-toast>
+  </c-card-body>
+</c-card>

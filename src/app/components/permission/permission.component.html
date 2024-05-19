@@ -1,0 +1,18 @@
+<table>
+  <thead>
+  <tr>
+    <th>Module</th>
+    <th>UPSERT</th>
+    <th>VIEW</th>
+    <th>DELETE</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let module of getModules()">
+    <td>{{ module }}</td>
+    <td><input type="checkbox" [(ngModel)]="permissionModel[module].UPSERT"></td>
+    <td><input type="checkbox" [(ngModel)]="permissionModel[module].VIEW"></td>
+    <td><input type="checkbox" [(ngModel)]="permissionModel[module].DELETE"></td>
+  </tr>
+  </tbody>
+</table>

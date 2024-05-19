@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import {BrowserModule, provideClientHydration, Title} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +18,7 @@ import { AppComponent } from './app.component';
 import { routes } from "./app-routing.module";
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import {
@@ -49,12 +49,58 @@ import {CoreUIFormsModule} from "./views/forms/forms.module";
 import {AuthServiceService} from "./services/Auth/auth-service.service";
 import {AuthGuardService} from "./services/Auth/auth-guard.service";
 import {AuthGuardLoginService} from "./services/Auth/auth-guard-login.service";
+import {AppInitService} from "./app-init.service";
+import {Observable, tap} from "rxjs";
+import {User} from "./models/user/user";
+import {UserService} from "./services/user/user.service";
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent,
 ];
+function initializeAppFactory(httpClient: HttpClient, userService: UserService): () => Promise<void> {
+  return () => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (!jwtToken) {
+      return Promise.resolve();
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${jwtToken}`
+    });
+
+    return httpClient.get<any>('http://localhost:8080/auth/me', { headers }).pipe(
+      tap((response) => {
+        const userData = response.data.user;
+        const dobDate = userData.employee.dob ? new Date(userData.employee.dob[0], userData.employee.dob[1] - 1, userData.employee.dob[2]) : new Date();
+        const startDate = userData.employee.startDate ? new Date(userData.employee.startDate[0], userData.employee.startDate[1] - 1, userData.employee.startDate[2]) : new Date();
+
+        const user = new User(
+          userData.id,
+          userData.employee ? userData.employee.name : null,
+          userData.userName,
+          userData.status,
+          dobDate,
+          userData.role,
+          userData.employee ? userData.employee.email : null,
+          userData.employee ? userData.employee.phone : null,
+          userData.employee ? userData.employee.gender : null,
+          userData.employee ? userData.employee.status : null,
+          userData.employee ? userData.employee.id : null,
+          userData.employee ? userData.employee.empLevel : null,
+          userData.employee ? userData.employee.department : null,
+          startDate,
+          userData.userName === 'admin'
+        );
+
+        localStorage.setItem('isAdmin', String(userData.userName === 'admin'));
+        userService.setCurrentUser(user);
+        localStorage.setItem('moduleList', JSON.stringify(response.data.moduleList));
+      })
+    ).toPromise();
+  };
+}
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
@@ -93,9 +139,16 @@ const APP_CONTAINERS = [
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
     CoreUIFormsModule,
-    AvatarComponent
+    AvatarComponent,
   ],
   providers: [
+    UserService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAppFactory,
+      deps: [HttpClient, UserService],
+      multi: true
+    },
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy

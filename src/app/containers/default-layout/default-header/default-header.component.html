@@ -51,10 +51,10 @@
           Profile
         </a>
       </li>
-      <li *ngIf="hideSetting">
-        <a routerLink="./" cDropdownItem>
+      <li *ngIf="showAdminSetting">
+        <a routerLink="./base/admin-manager" cDropdownItem>
           <svg cIcon class="me-2" name="cilSettings"></svg>
-          Settings
+          Admin manager
         </a>
       </li>
       <li>

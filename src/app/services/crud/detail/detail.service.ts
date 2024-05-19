@@ -30,10 +30,10 @@ export class DetailService {
     return this.http.delete(this.baseUrl + 'api/' + moduleName + '/' + id, {headers})
   }
 
-  getRelatedOption(moduleName: string | null, id: string | null):Observable<any> {
+  getRelatedOption(moduleName: string | null):Observable<any> {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
     })
-    return this.http.get(this.baseUrl + 'api/related/' + moduleName + '/' + id, {headers})
+    return this.http.get(this.baseUrl + 'api/related/' + moduleName, {headers})
   }
 }

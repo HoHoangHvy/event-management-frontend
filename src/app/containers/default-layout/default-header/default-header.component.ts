@@ -17,10 +17,8 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   @Input() sidebarId: string = "sidebar";
   hideDropdown: boolean = false;
-  hideSetting: boolean = false;
+  showAdminSetting: boolean = this.userService.isAdmin();
   public icons!: [string, string[]][];
-  public newMessages = new Array(4)
-  public newTasks = new Array(5)
   public newNotifications = new Array(5)
   public moduleList: Module[];
   public displayModuleList: Module[];
@@ -40,7 +38,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
       this.restModuleList = [];
     }
     if(this.restModuleList.length == 0) this.hideDropdown = true;
-    if(this.userService.isAdmin()) this.hideSetting = true;
+    console.log(this.showAdminSetting)
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -49,8 +47,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
     let startPos = Math.floor((newInnerWidth * (2/3)) / 100);
     this.displayModuleList = this.moduleList.slice(0,startPos)
     this.restModuleList = this.moduleList.slice(startPos, this.moduleList.length);
-    if(this.restModuleList.length == 0) this.hideDropdown = true;
-    else this.hideDropdown = false;
+    this.hideDropdown = this.restModuleList.length == 0;
     this.cdr.detectChanges();
   }
   logout() {

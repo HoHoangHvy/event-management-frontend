@@ -3,13 +3,15 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {tap} from "rxjs";
 import {jwtDecode} from "jwt-decode";
+import {User} from "../../models/user/user";
+import {UserService} from "../user/user.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServiceService {
   private baseUrl = 'http://localhost:8080/';
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private userService: UserService) { }
   authSubject = new BehaviorSubject<any>({
     user: null,
   });
@@ -58,4 +60,56 @@ export class AuthServiceService {
       user: null
     });
   }
+  public async handleRefreshUserData(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.getMe().subscribe(
+        (res: any) => {
+          localStorage.setItem('moduleList', JSON.stringify(res.data.moduleList));
+          this.processUserDetails(res.data.user);
+          resolve();
+        },
+        (error) => {
+          console.error('Error fetching user data:', error);
+          reject();
+        }
+      );
+    });
+  }
+  // public async handleRefreshUserData() {
+  //   this.getMe().subscribe(
+  //     (res: any) => {
+  //         localStorage.setItem('moduleList', JSON.stringify(res.data.moduleList));
+  //         this.processUserDetails(res.data.user);
+  //     },
+  //     (error) => {
+  //       // Handle error while fetching user data
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   );
+  // }
+  processUserDetails(userData: any) {
+    const dobDate = userData.employee.dob ? new Date(userData.employee.dob[0], userData.employee.dob[1] - 1, userData.employee.dob[2]) : new Date();
+    const startDate = userData.employee.startDate ? new Date(userData.employee.startDate[0], userData.employee.startDate[1] - 1, userData.employee.startDate[2]) : new Date();
+
+    const user = new User(
+      userData.id,
+      userData.employee ? userData.employee.name : null,
+      userData.userName,
+      userData.status,
+      dobDate,
+      userData.role,
+      userData.employee ? userData.employee.email : null,
+      userData.employee ? userData.employee.phone : null,
+      userData.employee ? userData.employee.gender : null,
+      userData.employee ? userData.employee.status : null,
+      userData.employee ? userData.employee.id : null,
+      userData.employee ? userData.employee.empLevel : null,
+      userData.employee ? userData.employee.department : null,
+      startDate,
+      userData.userName == 'admin'
+    );
+    localStorage.setItem('isAdmin', String(userData.userName == 'admin'));
+    this.userService.setCurrentUser(user);
+  }
+
 }

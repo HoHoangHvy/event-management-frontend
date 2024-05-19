@@ -1,0 +1,54 @@
+<c-nav variant="tabs">
+  <c-nav-item>
+    <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="0" cNavLink>
+      <svg cIcon class="me-2" name="cilUser"></svg>
+      All
+    </a>
+  </c-nav-item>
+  <c-nav-item>
+    <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="1" cNavLink>
+      <svg cIcon class="me-2" name="cilColorBorder"></svg>
+      News
+    </a>
+  </c-nav-item>
+  <c-nav-item>
+    <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="2" cNavLink>
+      <svg cIcon class="me-2" name="cilUser"></svg>
+      Promotion
+    </a>
+  </c-nav-item>
+  <c-nav-item>
+    <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="3" cNavLink>
+      <svg cIcon class="me-2" name="cilColorBorder"></svg>
+      Event
+    </a>
+  </c-nav-item>
+</c-nav>
+<c-tab-content #accountInfo="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+  <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+    <div class="account-info-container">
+      <app-new-feed></app-new-feed>
+    </div>
+  </c-tab-pane>
+  <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+    <div class="account-info-container">
+      <app-new-feed
+      [filter]="{'type': 'News'}"
+      ></app-new-feed>
+    </div>
+  </c-tab-pane>
+  <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+    <div class="account-info-container">
+      <app-new-feed
+        [filter]="{'type': 'Promotion'}"
+      ></app-new-feed>
+    </div>
+  </c-tab-pane>
+  <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+    <div class="account-info-container">
+      <app-new-feed
+        [filter]="{'type': 'Event'}"
+      ></app-new-feed>
+    </div>
+  </c-tab-pane>
+</c-tab-content>

@@ -1,0 +1,39 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Style the table header */
+thead tr {
+  background-color: #f2f2f2;
+  border-bottom: 2px solid #dddddd;
+}
+
+/* Style the table header cells */
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* Style the table rows */
+tbody tr:nth-of-type(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Style the checkboxes */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+/* Optional: Style the module names */
+tbody td:first-child {
+  font-weight: bold;
+}

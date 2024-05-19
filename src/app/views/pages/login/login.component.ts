@@ -67,8 +67,8 @@ export class LoginComponent {
   }
 
   private processUserDetails(userData: any) {
-    const dobDate = userData.employee ? new Date(userData.employee.dob[0], userData.employee.dob[1] - 1, userData.employee.dob[2]) : null;
-    const startDate = userData.employee ? new Date(userData.employee.startDate[0], userData.employee.startDate[1] - 1, userData.employee.startDate[2]) : null;
+    const dobDate = userData.employee.dob ? new Date(userData.employee.dob[0], userData.employee.dob[1] - 1, userData.employee.dob[2]) : new Date();
+    const startDate = userData.employee.startDate ? new Date(userData.employee.startDate[0], userData.employee.startDate[1] - 1, userData.employee.startDate[2]) : new Date();
 
     const user = new User(
       userData.id,

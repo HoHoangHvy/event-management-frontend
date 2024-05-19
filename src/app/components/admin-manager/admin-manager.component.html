@@ -1,0 +1,40 @@
+<c-row>
+  <c-col [md]="12">
+    <c-nav variant="tabs">
+      <c-nav-item>
+        <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="0" cNavLink>
+          <svg cIcon class="me-2" name="cilUser"></svg>
+          Accounts
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a [cTabContent]="accountInfo" [routerLink] [tabPaneIdx]="1" cNavLink>
+          <svg cIcon class="me-2" name="cilColorBorder"></svg>
+          Roles
+        </a>
+      </c-nav-item>
+    </c-nav>
+    <c-tab-content #accountInfo="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+      <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+        <div class="account-info-container">
+          <app-record-list-view
+            [moduleName]="accountModuleName"
+            [columnConfig]="accountColumnConfig"
+            [showHeader]="false"
+          ></app-record-list-view>
+        </div>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview account-info-tab" role="tabpanel">
+        <div class="account-info-container">
+          <app-record-list-view
+            [moduleName]="roleModuleName"
+            [columnConfig]="roleColumnConfig"
+            [showHeader]="true"
+          ></app-record-list-view>
+        </div>
+      </c-tab-pane>
+    </c-tab-content>
+  </c-col>
+</c-row>
+<p-confirmDialog></p-confirmDialog>
+<p-toast [life]="5000"></p-toast>
