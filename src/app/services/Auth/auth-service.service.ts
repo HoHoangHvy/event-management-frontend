@@ -43,6 +43,7 @@ export class AuthServiceService {
   }
   getMe():Observable<any> {
     const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
     })
     return this.http.get(this.baseUrl + 'auth/me', {headers})
@@ -110,6 +111,32 @@ export class AuthServiceService {
     );
     localStorage.setItem('isAdmin', String(userData.userName == 'admin'));
     this.userService.setCurrentUser(user);
+  }
+
+  public checkUserPermission(moduleName: string, action: string): boolean {
+    const currentUser: User | null = this.userService.getCurrentUser();
+    if (!currentUser || !currentUser.role || !currentUser.role.permission) {
+      return false;
+    }
+
+    const modulePermissions = currentUser.role.permission[moduleName];
+    if (!modulePermissions) {
+      console.error(`Module ${moduleName} not found in permissions`);
+      return false;
+    }
+    if(action == 'APPROVE'){
+      action = 'UPSERT';
+      let isManagerOrAdmin = currentUser.isAdmin || currentUser.role.name == 'MANAGER';
+      return isManagerOrAdmin && modulePermissions[action];
+    }
+    const hasPermission = modulePermissions[action];
+    if (typeof hasPermission === 'undefined') {
+      console.error(`Action ${action} not found in permissions for module ${moduleName}`);
+      return false;
+    }
+    console.log(hasPermission)
+
+    return hasPermission;
   }
 
 }

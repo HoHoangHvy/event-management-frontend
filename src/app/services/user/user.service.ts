@@ -19,7 +19,9 @@ export class UserService {
   getCurrentUser(): User | null {
     return this.currentUser.value;
   }
-
+  getId(): string {
+    return <string>this.currentUser.value?.userId;
+  }
   isAdmin(): boolean {
     console.log(this.currentUser.value?.isAdmin)
     return <boolean>this.currentUser.value?.isAdmin;

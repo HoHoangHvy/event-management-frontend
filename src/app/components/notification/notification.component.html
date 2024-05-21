@@ -1,0 +1,19 @@
+<div class="notification-container">
+  <div class="notification-header">
+    <span>Notifications (<span id="notification-count">{{ totalRecords }}</span>)</span>
+  </div>
+  <div class="notification-body" id="notification-list">
+    <div class="noti-container" *ngFor="let noti of notificationList" (click)="redirectToParent(noti.parentId, noti.parentType, noti.newType)">
+      <div class="noti-header">
+        {{noti.name}}
+      </div>
+      <div class="noti-body">
+        {{ noti.content }}
+      </div>
+      <span class="noti-date">
+          {{noti.dateEntered}}
+      </span>
+    </div>
+  </div>
+</div>
+

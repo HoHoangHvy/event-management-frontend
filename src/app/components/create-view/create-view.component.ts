@@ -100,7 +100,7 @@ export class CreateViewComponent {
   permissionModel: any = {
     // "Contracts": { "UPSERT": false, "VIEW": false, "DELETE": false },
     // "Customers": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Departments": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Departments": { "UPSERT": false, "VIEW": false, "DELETE": false },
     // "Dishes": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Employees": { "UPSERT": false, "VIEW": false, "DELETE": false },
     // "EventDetails": { "UPSERT": false, "VIEW": false, "DELETE": false },

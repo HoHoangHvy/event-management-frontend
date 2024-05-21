@@ -20,6 +20,7 @@ export class RecordListComponent implements OnInit {
   @Input() columnConfig: any;
   @Input() showHeader: Boolean = true;
   @Input() filter: any;
+  @Input() showBorder: any;
 
   totalRecords: number = 0;
   displayedColumns: any;
@@ -38,7 +39,7 @@ export class RecordListComponent implements OnInit {
     this.labelList = this.labelService.getFieldLabel(this.moduleName);
     this.listService.getListData(this.moduleName.toLowerCase()).subscribe((res) => {
       this.dataSource = new MatTableDataSource<any>(this.filterData(res.data.listData));
-      this.totalRecords = res.data.totalData;
+      this.totalRecords = this.filterData(res.data.listData).length;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       if(this.totalRecords === 0) {

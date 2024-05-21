@@ -12,6 +12,9 @@ import { AvatarModule } from './components/avatar/avatar.module';
 
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'https://socket.dotb.cloud/', options: {}};
 
 // Import app component
 import { AppComponent } from './app.component';
@@ -43,26 +46,25 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideRouter} from "@angular/router";
 import {CoreUIFormsModule} from "./views/forms/forms.module";
 import {AuthServiceService} from "./services/Auth/auth-service.service";
 import {AuthGuardService} from "./services/Auth/auth-guard.service";
 import {AuthGuardLoginService} from "./services/Auth/auth-guard-login.service";
-import {AppInitService} from "./app-init.service";
 import {Observable, tap} from "rxjs";
 import {User} from "./models/user/user";
 import {UserService} from "./services/user/user.service";
+import {BaseModule} from "./views/base/base.module";
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent,
 ];
-function initializeAppFactory(httpClient: HttpClient, userService: UserService): () => Promise<void> {
+function initializeAppFactory(httpClient: HttpClient, userService: UserService, authService: AuthServiceService): () => Promise<void> {
   return () => {
     const jwtToken = localStorage.getItem('jwtToken');
-    if (!jwtToken) {
+    if (!jwtToken || !authService.isAuthenticated()) {
       return Promise.resolve();
     }
 
@@ -104,49 +106,52 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService):
 
 @NgModule({
   declarations: [AppComponent, ...APP_CONTAINERS],
-  imports: [
-    AvatarModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    BreadcrumbModule,
-    FooterModule,
-    DropdownModule,
-    GridModule,
-    HeaderModule,
-    SidebarModule,
-    IconModule,
-    NavModule,
-    ButtonModule,
-    FormModule,
-    UtilitiesModule,
-    ButtonGroupModule,
-    ReactiveFormsModule,
-    SidebarModule,
-    SharedModule,
-    TabsModule,
-    ListGroupModule,
-    ProgressModule,
-    BadgeModule,
-    ListGroupModule,
-    CardModule,
-    NgScrollbarModule,
-    HttpClientModule,
-    BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(),
-    CoreUIFormsModule,
-    AvatarComponent,
-  ],
+    imports: [
+        SocketIoModule.forRoot(config),
+        AvatarModule,
+        MatNativeDateModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        BreadcrumbModule,
+        FooterModule,
+        DropdownModule,
+        GridModule,
+        HeaderModule,
+        SidebarModule,
+        IconModule,
+        NavModule,
+        ButtonModule,
+        FormModule,
+        UtilitiesModule,
+        ButtonGroupModule,
+        ReactiveFormsModule,
+        SidebarModule,
+        SharedModule,
+        TabsModule,
+        ListGroupModule,
+        ProgressModule,
+        BadgeModule,
+        ListGroupModule,
+        CardModule,
+        NgScrollbarModule,
+        HttpClientModule,
+        BrowserAnimationsModule, // required animations module
+        ToastrModule.forRoot(),
+        CoreUIFormsModule,
+        AvatarComponent,
+        BaseModule,
+    ],
   providers: [
     UserService,
+    AuthServiceService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
-      deps: [HttpClient, UserService],
+      deps: [HttpClient, UserService, AuthServiceService],
       multi: true
     },
     {

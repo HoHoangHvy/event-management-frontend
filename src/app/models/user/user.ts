@@ -4,7 +4,7 @@ export class User {
   userName?: string | null;
   status?: string | null;
   dob?: Date | null;
-  role?: Object | null;
+  role?: any | null;
   email?: string | null;
   phone?: string | null;
   gender?: string | null;

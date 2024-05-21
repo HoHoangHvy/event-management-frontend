@@ -23,6 +23,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   public moduleList: Module[];
   public displayModuleList: Module[];
   public restModuleList: Module[];
+  showNotifications: boolean = false;
   constructor(private classToggler: ClassToggleService, public iconSet: IconSetService, private cdr: ChangeDetectorRef, public router: Router, private toastr: ToastrService, private userService: UserService) {
     super();
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
@@ -38,7 +39,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
       this.restModuleList = [];
     }
     if(this.restModuleList.length == 0) this.hideDropdown = true;
-    console.log(this.showAdminSetting)
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -58,4 +58,13 @@ export class DefaultHeaderComponent extends HeaderComponent {
       window.location.reload();
     });
   }
+  openNotification(event: Event) {
+    event.preventDefault();  // Prevent the default action (navigation)
+    // Your logic here
+    this.showNotifications = !this.showNotifications;  // Toggle the visibility
+
+    console.log('Notification bell clicked!');
+  }
+
+  protected readonly open = open;
 }

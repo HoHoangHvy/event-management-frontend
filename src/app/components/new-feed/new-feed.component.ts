@@ -1,27 +1,22 @@
 import {Component, Input} from '@angular/core';
-import {CreateService} from "../../services/crud/create/create.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ConfirmationService, MessageService} from "primeng/api";
-import {FieldService} from "../../services/field/field.service";
-import {LabelService} from "../../services/label/label.service";
+import {Router} from "@angular/router";
 import {ListService} from "../../services/crud/list/list.service";
-import {LiveAnnouncer} from "@angular/cdk/a11y";
-import {MatTableDataSource} from "@angular/material/table";
+import {AuthServiceService} from "../../services/Auth/auth-service.service";
 
 @Component({
   selector: 'app-new-feed',
   standalone: false,
   templateUrl: './new-feed.component.html',
-  styleUrl: './new-feed.component.scss'
+  styleUrl: './new-feed.component.scss',
+  providers: [AuthServiceService]
 })
 export class NewFeedComponent {
   @Input() filter: any;
   postList: any;
   totalRecords: any = 0;
-  createPost() {
-    this.router.navigateByUrl('base/create/news');
-  }
-  constructor(private listService: ListService, private _liveAnnouncer: LiveAnnouncer, private router: Router, private messageService: MessageService, private labelService: LabelService, private fieldService: FieldService) { }
+  constructor(private listService: ListService,
+              private router: Router,
+              private authService: AuthServiceService) { }
   filterData(data: any) {
     if(this.filter){
       return data.filter((item: { [x: string]: any; }) => {

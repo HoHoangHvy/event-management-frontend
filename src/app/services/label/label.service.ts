@@ -10,7 +10,8 @@ export class LabelService {
       name: 'Full Name',
       phone: 'Phone',
       empLevel: 'Emp Level',
-      departmentId: 'Department',
+      departmentName: 'Department',
+      departmentId  : 'Department',
       roleId: 'Role',
       gender: 'Gender',
       status: 'Status',
@@ -49,7 +50,15 @@ export class LabelService {
       name: 'Title',
       content: 'Content',
       type: 'Type'
-    }
+    },
+    Requests: {
+      name: 'Title',
+      content: 'Content',
+      type: 'Type',
+      dateEntered: 'Date Entered',
+      status: 'Status',
+      employeeName: 'Employee Name',
+    },
   }
   getFieldLabel(moduleName: string): any {
     return this.globalLabelList[moduleName] || {};

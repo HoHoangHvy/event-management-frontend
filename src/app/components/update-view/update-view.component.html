@@ -85,6 +85,8 @@
       <c-col [md]="12">
         <button cButton color="primary" (click)="saveInfo()">Save</button>
         <button id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
+        <button *ngIf="showApproveButton" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>
+        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest()">Reject</button>
       </c-col>
     </form>
     <p-confirmDialog></p-confirmDialog>

@@ -4,16 +4,17 @@ import { Router, NavigationEnd } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 import { Title } from '@angular/platform-browser';
-import {User} from "./models/user/user";
 import {UserService} from "./services/user/user.service";
 import {AuthServiceService} from "./services/Auth/auth-service.service";
 import {ToastrService} from "ngx-toastr";
 import { PrimeNGConfig } from 'primeng/api';
+import {NotificationResponse} from "./models/NotificationResponse/notification-response";
+import {NotificationService} from "./services/notification/notification.service";
 
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
   title = 'CoreUI Free Angular Admin Template';
@@ -25,14 +26,19 @@ export class AppComponent implements OnInit {
     private authService: AuthServiceService,
     private userService: UserService,
     private toastr: ToastrService,
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig,
+    private notificationService: NotificationService
   ) {
     titleService.setTitle(this.title);
     // iconSet singleton
     iconSetService.icons = { ...iconSubset };
   }
-
+  notifications: NotificationResponse[] = [];
+  userId : string = this.userService.getId();
   ngOnInit(): void {
+    this.notificationService.getNotification(this.userId).subscribe((notification) => {
+      console.log(notification);
+    });
     this.primengConfig.ripple = true;
     this.primengConfig.zIndex = {
       modal: 1100,    // dialog, sidebar
@@ -48,4 +54,6 @@ export class AppComponent implements OnInit {
     });
 
   }
+
+
 }

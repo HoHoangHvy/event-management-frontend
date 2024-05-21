@@ -72,6 +72,7 @@ import {PermissionComponent} from "../../components/permission/permission.compon
 import {NewFeedComponent} from "../../components/new-feed/new-feed.component";
 import {NewFeedContainerComponent} from "../../components/new-feed-container/new-feed-container.component";
 import {AvatarModule} from "../../components/avatar/avatar.module";
+import {NotificationComponent} from "../../components/notification/notification.component";
 
 @NgModule({
   imports: [
@@ -145,9 +146,13 @@ import {AvatarModule} from "../../components/avatar/avatar.module";
     RecordListComponent,
     PermissionComponent,
     NewFeedComponent,
-    NewFeedContainerComponent
+    NewFeedContainerComponent,
+    NotificationComponent
   ],
   providers: [IconSetService, MessageService, ConfirmationService],
+  exports: [
+    NotificationComponent
+  ]
 })
 export class BaseModule {
   public icons!: [string, string[]][];

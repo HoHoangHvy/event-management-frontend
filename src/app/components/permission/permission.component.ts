@@ -14,7 +14,8 @@ export class PermissionComponent implements OnChanges {
     "Notifications": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Requests": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Resources": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    "News": { "UPSERT": false, "VIEW": false, "DELETE": false }
+    "News": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Departments": { "UPSERT": false, "VIEW": false, "DELETE": false }
   };
 
   ngOnChanges(changes: SimpleChanges): void {

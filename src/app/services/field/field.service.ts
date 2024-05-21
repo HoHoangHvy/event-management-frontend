@@ -301,7 +301,41 @@ export class FieldService {
         colSpan: '4',
         options: []
       },
+    ],
+    requests: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'type',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "Absent", label: "Absent"},
+          {value: "Promotion", label: "Promotion"},
+          {value: "Other", label: "Other"},
+        ]
+      },
+      {
+        name: 'content',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
     ]
+
   };
   displayedColumns: any;
   constructor(private userService: UserService, private detailService: DetailService, private route: ActivatedRoute) { }
@@ -354,6 +388,7 @@ export class FieldService {
       departments: ['name', 'totalEmployee'],
       users: ['userName', 'status', 'roleName', 'employeeName'],
       roles: ['name', 'dateEntered', 'totalUser'],
+      requests: ['name', 'type', 'content', 'dateEntered', 'status', 'employeeName'],
     };
     return columns[moduleName] || [];
   }

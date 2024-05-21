@@ -1,7 +1,3 @@
-<button cButton color="primary" class="floating-button" [cTooltip]="'Create a post'" type="submit"
-        (click)="createPost()">
-  <svg cIcon class="create-button" name="cilColorBorder"></svg>
-</button>
 <span *ngIf="totalRecords == 0">You have no news yet</span>
 <c-card class="mb-4" *ngFor="let post of postList">
   <c-card-header class="post-header {{post.type}}">
