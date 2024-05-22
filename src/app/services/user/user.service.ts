@@ -23,7 +23,6 @@ export class UserService {
     return <string>this.currentUser.value?.userId;
   }
   isAdmin(): boolean {
-    console.log(this.currentUser.value?.isAdmin)
     return <boolean>this.currentUser.value?.isAdmin;
   }
 

@@ -83,10 +83,22 @@
         </div>
       </c-col>
       <c-col [md]="12">
-        <button cButton color="primary" (click)="saveInfo()">Save</button>
-        <button id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
-        <button *ngIf="showApproveButton" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>
-        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest()">Reject</button>
+        <button *ngIf="((!isApproved && !showApproveButton) || isAdmin) && canUpsert" cButton color="primary" (click)="saveInfo()">Save</button>
+        <button *ngIf="(!showApproveButton || isAdmin) && canDelete" [style.margin-left]="!isApproved ? '10px' : '0px'" id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
+        <button *ngIf="showApproveButton" [style.margin-left]="showApproveButton && isAdmin ? '10px' : '0px'" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>
+        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest($event)">Reject</button>
+        <p-dialog header="Reject a request" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '25rem' }">
+          <div class="flex align-items-center gap-3 mb-3">
+            <form cForm class="row g-3">
+              <label for="username" class="font-semibold w-6rem">Reject reason</label>
+              <input cFormControl id="username" class="flex-auto" autocomplete="off" [(ngModel)]="rejectReason" name="rejectReason"/>
+            </form>
+          </div>
+          <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+            <button cButton color="light" severity="secondary" (click)="visibleDialog = false">Cancel</button>
+            <button cButton color="primary" (click)="saveRejectInfo()">Save</button>
+          </div>
+        </p-dialog>
       </c-col>
     </form>
     <p-confirmDialog></p-confirmDialog>

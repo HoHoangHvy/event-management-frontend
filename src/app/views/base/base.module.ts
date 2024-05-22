@@ -73,6 +73,8 @@ import {NewFeedComponent} from "../../components/new-feed/new-feed.component";
 import {NewFeedContainerComponent} from "../../components/new-feed-container/new-feed-container.component";
 import {AvatarModule} from "../../components/avatar/avatar.module";
 import {NotificationComponent} from "../../components/notification/notification.component";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   imports: [
@@ -121,7 +123,9 @@ import {NotificationComponent} from "../../components/notification/notification.
     ToastModule,
     CalendarModule,
     IconDirective,
-    AvatarModule
+    AvatarModule,
+    ConfirmPopupModule,
+    DialogModule
   ],
   declarations: [
     AccordionsComponent,

@@ -125,9 +125,8 @@ export class AuthServiceService {
       return false;
     }
     if(action == 'APPROVE'){
-      action = 'UPSERT';
       let isManagerOrAdmin = currentUser.isAdmin || currentUser.role.name == 'MANAGER';
-      return isManagerOrAdmin && modulePermissions[action];
+      return isManagerOrAdmin
     }
     const hasPermission = modulePermissions[action];
     if (typeof hasPermission === 'undefined') {

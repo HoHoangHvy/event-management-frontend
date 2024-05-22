@@ -55,7 +55,7 @@ export class NotificationComponent {
           index = 3;
           break;
       }
-    } else if(type == 'Request') url = '/base/update/requests/' + id;
+    } else if(type == 'Request') url = '/base/detail/requests/' + id;
     console.log(url)
     this.router.navigate([url], { queryParams: { activeIndex:  index} });
 

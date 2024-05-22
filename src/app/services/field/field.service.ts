@@ -334,6 +334,51 @@ export class FieldService {
         colSpan: '4',
         options: []
       },
+      {
+        name: 'status',
+        isSelect: true,
+        isDate: false,
+        isDisabled: true,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "Wait for approval", label: "Wait for approval"},
+          {value: "Approved", label: "Approved"},
+          {value: "Reject", label: "Reject"},
+        ]
+      },
+      {
+        name: 'rejectReason',
+        isSelect: false,
+        isDate: false,
+        isDisabled: true,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'approveDate',
+        isSelect: false,
+        isDate: false,
+        isDisabled: true,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'approvedByName',
+        isSelect: false,
+        isDate: false,
+        isDisabled: true,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+
     ]
 
   };

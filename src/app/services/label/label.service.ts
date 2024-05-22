@@ -58,6 +58,9 @@ export class LabelService {
       dateEntered: 'Date Entered',
       status: 'Status',
       employeeName: 'Employee Name',
+      approvedByName: 'Approved By',
+      rejectReason: 'Reject reason',
+      approveDate: 'Approve date',
     },
   }
   getFieldLabel(moduleName: string): any {
