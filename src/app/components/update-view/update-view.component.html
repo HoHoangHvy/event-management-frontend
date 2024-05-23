@@ -81,24 +81,120 @@
             </c-tab-pane>
           </c-tab-content>
         </div>
+
+        <div *ngIf="moduleName === 'Requests'">
+          <c-card>
+            <div class="history-header">
+              <span class="history-title">Request History</span>
+              <div class="button-group">
+                <button cButton class="pull-right" *ngIf="showHistoryTable" (click)="showHistoryTable = false">Hide</button>
+                <button cButton class="pull-right" *ngIf="!showHistoryTable" (click)="showHistoryTable = true">Show</button>
+              </div>
+            </div>
+            <c-card-body *ngIf="showHistoryTable">
+              <table cTable>
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Department</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Response</th>
+                  <th scope="col">Resolved By</th>
+                  <th scope="col">Note</th>
+                  <th scope="col">Date Entered</th>
+                  <th scope="col">Date Resolved</th>
+                  <th scope="col" *ngIf="canDoAction"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of historyList; let i = index" class="history-row">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ item.departmentName }}</td>
+                  <td>{{ item.resolveStatus }}</td>
+                  <td>{{ item.response }}</td>
+                  <td>{{ item.resolveByName }}</td>
+                  <td>{{ item.note }}</td>
+                  <td>{{ item.dateEntered }}</td>
+                  <td>{{ item.resolvedDate }}</td>
+                  <td>
+                    <c-dropdown *ngIf="canDoAction && item.resolveStatus == 'Pending' && item.departmentName == currentManagerDepartment">
+                      <button cButton cDropdownToggle color="primary" style="padding: 8px;padding-top: 0px;padding-bottom: 0px;">
+                      </button>
+                      <ul cDropdownMenu>
+                        <li ><div cDropdownItem (click)="visibleEditDialog = true">Edit</div></li>
+                        <li *ngIf="isPending"><div cDropdownItem (click)="approveRequest(item.id, item); visibleApproveResponseDialog = true">Approve</div></li>
+                        <li *ngIf="isPending"><div cDropdownItem (click)="forwardRequest(item.id, item); visibleForwardingDialog = true">Approve & Forward</div></li>
+                        <li *ngIf="isPending"><div cDropdownItem (click)="saveRejectInfo(item.id, item); visibleRejectResponseDialog = true">Reject</div></li>
+                      </ul>
+                      <p-dialog header="Edit forwarding request" [modal]="true" [(visible)]="visibleEditDialog" [style]="{ width: '50rem' }">
+                        <app-record-view
+                          [moduleName]="'requestdepartments'"
+                          [detailObject]="item"
+                          [recordId]="item.id"
+                        ></app-record-view>
+                      </p-dialog>
+                    </c-dropdown>
+                  </td>
+                </tr>
+                <p-dialog header="Forward request" [modal]="true" [(visible)]="visibleForwardingDialog" [style]="{ width: '50rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <c-col>
+                        <label for="department" class="font-semibold w-6rem">Department</label>
+                        <select cSelect id="department" [(ngModel)]="departmentId" name="toDepartment">
+                          <option *ngFor="let department of departments" [value]="department.value">{{ department.label }}</option>
+                        </select>
+                      </c-col>
+                      <c-col>
+                        <label for="noteResponse" class="font-semibold w-6rem">Note</label>
+                        <input cFormControl id="noteResponse" class="flex-auto" autocomplete="off" [(ngModel)]="note" name="note"/>
+                      </c-col>
+                      <c-col [md]="12">
+                        <label for="response" class="font-semibold w-6rem">Response - For employee</label>
+                        <input cFormControl id="response" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="response"/>
+                      </c-col>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleForwardingDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('forward')">Save</button>
+                  </div>
+                </p-dialog>
+                <p-dialog header="Response" [modal]="true" [(visible)]="visibleApproveResponseDialog" [style]="{ width: '25rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <label for="approveResponse" class="font-semibold w-6rem">Approve Response</label>
+                      <input cFormControl id="approveResponse" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="rejectReason"/>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleApproveResponseDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('approve')">Save</button>
+                  </div>
+                </p-dialog>
+                <p-dialog header="Reject reason" [modal]="true" [(visible)]="visibleRejectResponseDialog" [style]="{ width: '25rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <label for="rejectResponse" class="font-semibold w-6rem">Reject reason</label>
+                      <input cFormControl id="rejectResponse" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="rejectReason"/>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleRejectResponseDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('reject')">Save</button>
+                  </div>
+                </p-dialog>
+                </tbody>
+              </table>
+            </c-card-body>
+          </c-card>
+        </div>
       </c-col>
       <c-col [md]="12">
-        <button *ngIf="((!isApproved && !showApproveButton) || isAdmin) && canUpsert" cButton color="primary" (click)="saveInfo()">Save</button>
+        <button *ngIf="((!isApproved && !showApproveButton && !isRejected) || isAdmin) && canUpsert" cButton color="primary" (click)="saveInfo()">Save</button>
         <button *ngIf="(!showApproveButton || isAdmin) && canDelete" [style.margin-left]="!isApproved ? '10px' : '0px'" id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
-        <button *ngIf="showApproveButton" [style.margin-left]="showApproveButton && isAdmin ? '10px' : '0px'" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>
-        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest($event)">Reject</button>
-        <p-dialog header="Reject a request" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '25rem' }">
-          <div class="flex align-items-center gap-3 mb-3">
-            <form cForm class="row g-3">
-              <label for="username" class="font-semibold w-6rem">Reject reason</label>
-              <input cFormControl id="username" class="flex-auto" autocomplete="off" [(ngModel)]="rejectReason" name="rejectReason"/>
-            </form>
-          </div>
-          <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
-            <button cButton color="light" severity="secondary" (click)="visibleDialog = false">Cancel</button>
-            <button cButton color="primary" (click)="saveRejectInfo()">Save</button>
-          </div>
-        </p-dialog>
+<!--        <button *ngIf="showApproveButton" [style.margin-left]="showApproveButton && isAdmin ? '10px' : '0px'" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>-->
+<!--        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest($event)">Reject</button>-->
       </c-col>
     </form>
     <p-confirmDialog></p-confirmDialog>

@@ -7,9 +7,10 @@ import { Title } from '@angular/platform-browser';
 import {UserService} from "./services/user/user.service";
 import {AuthServiceService} from "./services/Auth/auth-service.service";
 import {ToastrService} from "ngx-toastr";
-import { PrimeNGConfig } from 'primeng/api';
+import {MessageService, PrimeNGConfig} from 'primeng/api';
 import {NotificationResponse} from "./models/NotificationResponse/notification-response";
 import {NotificationService} from "./services/notification/notification.service";
+import {SocketIoService} from "./services/SocketIO/socket-io.service";
 
 
 @Component({
@@ -17,7 +18,7 @@ import {NotificationService} from "./services/notification/notification.service"
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Free Angular Admin Template';
+  title = 'Internal Management System - Winx';
 
   constructor(
     private router: Router,
@@ -27,7 +28,9 @@ export class AppComponent implements OnInit {
     private userService: UserService,
     private toastr: ToastrService,
     private primengConfig: PrimeNGConfig,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private socketIOService: SocketIoService,
+    private messageService: MessageService
   ) {
     titleService.setTitle(this.title);
     // iconSet singleton
@@ -35,10 +38,13 @@ export class AppComponent implements OnInit {
   }
   notifications: NotificationResponse[] = [];
   userId : string = this.userService.getId();
-  ngOnInit(): void {
-    this.notificationService.getNotification(this.userId).subscribe((notification) => {
-      console.log(notification);
-    });
+  ngOnInit(): void {'' +
+    this.socketIOService.initSocket('/notifications/HoHoangHvy/' + this.userService.getId(),
+      (msg) => {
+        console.log(msg)
+        this.messageService.add({severity:'info', summary:msg.name, detail:msg.content});
+        this.notificationService.reloadNotifications()
+      });
     this.primengConfig.ripple = true;
     this.primengConfig.zIndex = {
       modal: 1100,    // dialog, sidebar

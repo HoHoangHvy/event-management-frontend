@@ -14,7 +14,8 @@
     </c-nav>
     <c-header-nav class="d-none d-lg-flex">
       <c-nav-item>
-        <span cNavLink (click)="openNotification($event)">
+        <span class="nav-link" cNavLink (click)="openNotification($event)">
+                  <span class="unread-notice" *ngIf="haveUnreadNoti"></span>
           <svg cIcon name="cilBell" size="lg"></svg>
         </span>
       </c-nav-item>

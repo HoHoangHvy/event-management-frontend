@@ -41,7 +41,7 @@ import {
   ProgressModule,
   SharedModule,
   SidebarModule,
-  TabsModule, ToasterComponent, ToastModule,
+  TabsModule,
   UtilitiesModule
 } from '@coreui/angular';
 
@@ -55,6 +55,9 @@ import {Observable, tap} from "rxjs";
 import {User} from "./models/user/user";
 import {UserService} from "./services/user/user.service";
 import {BaseModule} from "./views/base/base.module";
+import { ToastModule } from 'primeng/toast';
+import {MessageService} from "primeng/api";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -91,7 +94,7 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService, 
           userData.employee ? userData.employee.status : null,
           userData.employee ? userData.employee.id : null,
           userData.employee ? userData.employee.empLevel : null,
-          userData.employee ? userData.employee.department : null,
+          userData.employee ? userData.employee.departmentName : null,
           startDate,
           userData.userName === 'admin'
         );
@@ -144,6 +147,7 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService, 
         CoreUIFormsModule,
         AvatarComponent,
         BaseModule,
+        ToastModule,
     ],
   providers: [
     UserService,
@@ -162,12 +166,15 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService, 
     AuthGuardLoginService,
     IconSetService,
     Title,
+    MessageService,
     // provideClientHydration(),
     // provideAnimationsAsync(),
     // provideHttpClient(withFetch()),
     provideRouter(routes)
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Add this line
+
 })
 export class AppModule {
 }

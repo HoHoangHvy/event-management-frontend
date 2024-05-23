@@ -75,6 +75,7 @@ import {AvatarModule} from "../../components/avatar/avatar.module";
 import {NotificationComponent} from "../../components/notification/notification.component";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {DialogModule} from "primeng/dialog";
+import {RecordViewComponent} from "../../components/record-view/record-view.component";
 
 @NgModule({
   imports: [
@@ -151,7 +152,8 @@ import {DialogModule} from "primeng/dialog";
     PermissionComponent,
     NewFeedComponent,
     NewFeedContainerComponent,
-    NotificationComponent
+    NotificationComponent,
+    RecordViewComponent
   ],
   providers: [IconSetService, MessageService, ConfirmationService],
   exports: [

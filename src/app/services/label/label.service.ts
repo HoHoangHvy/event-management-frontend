@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class LabelService {
   globalLabelList: any = {
-    Employees: {
+    employees: {
       id: 'ID',
       name: 'Full Name',
       phone: 'Phone',
@@ -19,7 +19,7 @@ export class LabelService {
       startDate: 'Start Date',
       email: 'Email',
     },
-    Events: {
+    events: {
       id: 'ID',
       name: 'Event Name',
       description: 'Description',
@@ -30,28 +30,28 @@ export class LabelService {
       approvedByName: 'Approved by',
       customerName: 'Customer',
     },
-    Departments: {
+    departments: {
       name: 'Department name',
       totalEmployee: 'Total employees',
     },
-    Users: {
+    users: {
       userName: 'User Name',
       status: 'Status',
       roleName: 'Role Name',
       roleId: 'Role',
       employeeName: 'Employee',
     },
-    Roles: {
+    roles: {
       name: 'Role Name',
       dateEntered: 'Date Entered',
       totalUser: 'Total Users',
     },
-    News: {
+    news: {
       name: 'Title',
       content: 'Content',
       type: 'Type'
     },
-    Requests: {
+    requests: {
       name: 'Title',
       content: 'Content',
       type: 'Type',
@@ -62,9 +62,21 @@ export class LabelService {
       rejectReason: 'Reject reason',
       approveDate: 'Approve date',
     },
+    requestdepartments: {
+      content: 'Content',
+      type: 'Type',
+      dateEntered: 'Date Entered',
+      status: 'Status',
+      departmentName: 'Department',
+      departmentId: 'Department',
+      note: 'Note',
+      response: 'Response',
+      rejectReason: 'Reject reason',
+      approveDate: 'Approve date',
+    },
   }
   getFieldLabel(moduleName: string): any {
-    return this.globalLabelList[moduleName] || {};
+    return this.globalLabelList[moduleName.toLowerCase()] || {};
   }
   constructor() { }
 }

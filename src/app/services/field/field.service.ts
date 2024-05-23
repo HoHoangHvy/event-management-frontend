@@ -345,7 +345,7 @@ export class FieldService {
         options: [
           {value: "Wait for approval", label: "Wait for approval"},
           {value: "Approved", label: "Approved"},
-          {value: "Reject", label: "Reject"},
+          {value: "Rejected", label: "Rejected"},
         ]
       },
       {
@@ -378,7 +378,26 @@ export class FieldService {
         colSpan: '4',
         options: []
       },
-
+    ],
+    requestdepartments: [
+      {
+        name: 'departmentId',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '6',
+        options: []
+      },
+      {
+        name: 'note',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '6',
+        options: []
+      },
     ]
 
   };
@@ -386,7 +405,7 @@ export class FieldService {
   constructor(private userService: UserService, private detailService: DetailService, private route: ActivatedRoute) { }
 
   private isNeedRelatedOptions(moduleName: string): boolean {
-    let moduleList = ['employees', 'events', 'users'];
+    let moduleList = ['employees', 'events', 'users', 'requestdepartments'];
     return moduleList.includes(moduleName);
   }
 

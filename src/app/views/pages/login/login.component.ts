@@ -83,7 +83,7 @@ export class LoginComponent {
       userData.employee ? userData.employee.status : null,
       userData.employee ? userData.employee.id : null,
       userData.employee ? userData.employee.empLevel : null,
-      userData.employee ? userData.employee.department : null,
+      userData.employee ? userData.employee.departmentName : null,
       startDate,
       userData.userName === 'admin'
     );

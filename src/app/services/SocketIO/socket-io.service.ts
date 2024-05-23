@@ -1,36 +1,35 @@
 // src/app/services/socket-io.service.ts
 import { Injectable } from '@angular/core';
-import { Socket, SocketIoConfig } from 'ngx-socket-io';
-import {NotificationResponse} from "../../models/NotificationResponse/notification-response";
+import { io, Socket } from 'socket.io-client';
+import {UserService} from "../user/user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketIoService {
 
-  private config: SocketIoConfig = {
-    url: 'http://localhost:8080/ws',
-    options: {
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            Authorization: `Bearer ${this.getToken()}`
-          }
-        }
-      }
-    }
-  };
+  private socket: Socket = io();
 
-  constructor(private socket: Socket) {
-    this.socket = new Socket(this.config);
+  constructor(
+    private userService: UserService
+  ) {
   }
 
-  private getToken(): string {
-    // Implement your logic to retrieve the token
-    return localStorage.getItem('jwtToken') || '';
-  }
+  public initSocket(key: string, callback: (msg: any) => void): void {
+    const socketURL = "https://socket.dotb.cloud/";
+    this.socket = io(socketURL, { path: "", transports: ["websocket"], reconnection: true });
 
-  getNotification(userId: string) {
-    return this.socket.fromEvent<NotificationResponse>(`/user/${userId}/topic/notifications`);
-  }
-}
+    this.socket.on('connect', () => {
+      console.log('Socket server is live!');
+      this.socket.emit('join', key);
+    });
+
+    this.socket.on('error', () => {
+      console.log('Cannot connect to socket server!');
+    });
+
+    this.socket.on('event-phenikaa', (msg) => {
+      console.log(123);
+      callback(msg);  // Call the passed callback function with the message
+    });
+  }}

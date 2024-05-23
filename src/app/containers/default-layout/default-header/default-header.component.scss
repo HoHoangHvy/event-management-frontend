@@ -1,0 +1,15 @@
+.nav-link {
+  position: relative; /* Ensure the container is relatively positioned */
+  display: inline-block; /* Adjust display as needed */
+}
+
+.unread-notice {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  z-index: 1;
+}

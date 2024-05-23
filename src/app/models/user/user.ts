@@ -11,7 +11,8 @@ export class User {
   empStatus?: string | null;
   empId?: string | null;
   empLevel?: string | null;
-  department?: string | null;
+  departmentName?: string | null;
+  departmentId?: string | null;
   startDate?: Date | null;
   isAdmin?: boolean | null;
 
@@ -44,7 +45,7 @@ export class User {
     this.empStatus = empStatus;
     this.empId = empId;
     this.empLevel = empLevel;
-    this.department = department;
+    this.departmentName = department;
     this.startDate = startDate;
     this.isAdmin = isAdmin;
   }

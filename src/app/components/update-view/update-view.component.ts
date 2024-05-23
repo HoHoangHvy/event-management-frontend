@@ -35,19 +35,30 @@ export class UpdateViewComponent {
   canUpsert: boolean = false;
   canDelete: boolean = false;
   isApproved: boolean = false;
+  isRejected: boolean = false;
+  isPending: boolean = false;
+  canDoAction: boolean = false;
+  showHistoryTable: boolean = true;
+  currentManagerDepartment: string = 'true';
+  historyList: any;
 
   async ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.route.snapshot.paramMap.get('moduleName'));
     this.canUpsert = this.authService.checkUserPermission(this.moduleName, 'UPSERT');
     this.canDelete = this.authService.checkUserPermission(this.moduleName, 'DELETE');
     this.isAdmin = this.userService.isAdmin();
+    this.canDoAction = this.authService.checkUserPermission(this.moduleName, 'APPROVE');
+    this.currentManagerDepartment = this.userService.getCurrentUser()?.departmentName || '';
+    console.log(this.currentManagerDepartment)
     try {
       this.displayedColumns = await this.fieldService.getFieldList(this.moduleName.toLowerCase());
       this.labelList = this.labelService.getFieldLabel(this.moduleName) || {};
       this.detailService.getDetailData(this.moduleName.toLowerCase(), this.route.snapshot.paramMap.get('id')).subscribe((res: any) => {
         this.detailObject = res.data || {};
         this.showApproveButton = this.moduleName == "Requests" && this.authService.checkUserPermission('Requests', 'APPROVE') && this.detailObject.status == 'Wait for approval';
-        this.isApproved = this.detailObject.status == 'Approved' || this.detailObject.status == 'Reject'
+        this.isApproved = this.detailObject.status == 'Approved';
+        this.isRejected = this.detailObject.status == 'Rejected';
+        this.isPending = this.detailObject.status == 'Wait for approval';
 
         this.handleCustomView(this.detailObject);
       });
@@ -59,6 +70,10 @@ export class UpdateViewComponent {
     switch (this.moduleName) {
       case 'Roles':
         this.permissionModel = object.permission;
+        break;
+      case 'Requests':
+        this.historyList = object.requestDepartments;
+        console.log(this.historyList)
         break;
     }
   }
@@ -102,38 +117,103 @@ export class UpdateViewComponent {
       }
     });
   }
-  approveRequest() {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to approve this request?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
-      acceptButtonStyleClass: 'p-button-primary p-button-sm',
-      accept: () => {
-        this.detailObject.status = 'Approved';
-        this.detailService.updateDetailData(this.route.snapshot.paramMap.get('moduleName'), this.route.snapshot.paramMap.get('id'), this.detailObject).subscribe((res: any) => {
-          this.messageService.add({severity:'success', summary:'Success', detail:'Successfully updated!'});
-          window.location.reload();
-        });
-      },
-      reject: () => {
-      }
-    });
+  visibleApproveResponseDialog: boolean = false;
+  visibleRejectResponseDialog: boolean = false;
+  tempId: string | undefined;
+  tmpObject: any;
+  approveRequest(id: string | undefined, object: any) {
+    this.tempId = id;
+    this.tmpObject = object;
+    if(this.response) {
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to approve this request?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
+        acceptButtonStyleClass: 'p-button-primary p-button-sm',
+        accept: () => {
+          this.visibleApproveResponseDialog = false
+          object.status = 'Approved';
+          object.response = this.response;
+          this.detailService.updateDetailData('requestdepartments', id || '', object).subscribe((res: any) => {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Successfully updated!'});
+            setTimeout(function() {window.location.reload()}, 2000);
+          });
+        },
+        reject: () => {
+        }
+      });
+    }
   }
-  rejectReason: string = '';
-  visibleDialog: boolean = false;
-  rejectRequest(event: Event) {
-    this.visibleDialog = true;
+  saveResponseInfo(action: string) {
+    if(action == 'approve') {
+      this.approveRequest(this.tempId, this.tmpObject);
+    } else if(action == 'reject') {
+      this.saveRejectInfo(this.tempId, this.tmpObject);
+    } else {
+      this.forwardRequest(this.tempId, this.tmpObject);
+    }
   }
-  saveRejectInfo() {
-    console.log(this.rejectReason);
-    this.visibleDialog = false;
-    this.detailObject.status = 'Reject';
-    this.detailObject.rejectReason = this.rejectReason;
-    this.detailService.updateDetailData(this.route.snapshot.paramMap.get('moduleName'), this.route.snapshot.paramMap.get('id'), this.detailObject).subscribe((res: any) => {
-      this.messageService.add({severity: 'success', summary: 'Success', detail: 'Successfully updated!'});
-      window.location.reload();
-    });
+  response: string = '';
+  visibleEditDialog: boolean = false;
+  saveRejectInfo(id: string | undefined, object: any) {
+    this.tempId = id;
+    this.tmpObject = object;
+    if(this.response) {
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to reject this request?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
+        acceptButtonStyleClass: 'p-button-primary p-button-sm',
+        accept: () => {
+          this.visibleApproveResponseDialog = false
+          object.status = 'Rejected';
+          object.response = this.response;
+          this.detailService.updateDetailData('requestdepartments', id || '', object).subscribe((res: any) => {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Successfully Reject!'});
+            setTimeout(function() {window.location.reload()}, 2000);
+          });
+        },
+        reject: () => {
+        }
+      });
+    }
+  }
+  note: string = '';
+  departmentId: string = '';
+  departments: any;
+  visibleForwardingDialog: boolean = false;
+  async forwardRequest(id: string | undefined, object: any) {
+    this.tempId = id;
+    this.tmpObject = object;
+    let fieldDef = await this.fieldService.getFieldList('requestdepartments');
+    this.departments = fieldDef[0].options;
+    if (this.response && this.note && this.departmentId) {
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to approve and forward this request?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
+        acceptButtonStyleClass: 'p-button-primary p-button-sm',
+        accept: () => {
+          this.visibleForwardingDialog = false
+          object.status = 'Forwarding';
+          object.response = this.response;
+          object.note = this.note;
+          object.departmentId = this.departmentId;
+          this.detailService.updateDetailData('requestdepartments', id || '', object).subscribe((res: any) => {
+            this.messageService.add({severity: 'success', summary: 'Success', detail: 'Successfully Forward!'});
+            setTimeout(function() {window.location.reload()}, 2000);
+          });
+        },
+        reject: () => {
+        }
+      });
+    }
+  }
+  editHistory(item: any){
+    this.router.navigateByUrl(`/base/detail/requests/${item.id}`);
   }
   protected readonly String = String;
 }

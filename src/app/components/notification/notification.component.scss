@@ -49,3 +49,24 @@
 .noti-container:hover {
   background-color: #CCCADC;
 }
+.unread-noti {
+  background-color: aliceblue !important;
+}
+.unread-noti .noti-header .unread-notice {
+  display: block;
+}
+.unread-noti:hover {
+  background-color: #CCCADC !important;
+}
+.unread-notice {
+  width: 10px;
+  display: none;
+  background-color: #321fdb;
+  height: 10px;
+  border-radius: 50%;
+}
+.noti-header {
+  display: grid;
+  grid-template-columns: 97% 2%;
+}
+

@@ -8,6 +8,7 @@ import {LiveAnnouncer} from "@angular/cdk/a11y";
 import {MessageService} from "primeng/api";
 import {LabelService} from "../../services/label/label.service";
 import {FieldService} from "../../services/field/field.service";
+import {AuthServiceService} from "../../services/Auth/auth-service.service";
 
 @Component({
   selector: 'app-record-list-view',
@@ -26,17 +27,25 @@ export class RecordListComponent implements OnInit {
   displayedColumns: any;
   dataSource: any;
   showTable: boolean = true;
+  canCreate: boolean = true;
   labelList: any = {};
 
   @ViewChild(MatSort) sort: MatSort | null = null;
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  constructor(private listService: ListService, private _liveAnnouncer: LiveAnnouncer, private router: Router, private messageService: MessageService, private labelService: LabelService, private fieldService: FieldService) { }
+  constructor(private listService: ListService,
+              private _liveAnnouncer: LiveAnnouncer,
+              private router: Router,
+              private messageService: MessageService,
+              private labelService: LabelService,
+              private fieldService: FieldService,
+              private authService: AuthServiceService) { }
 
   ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.moduleName);
     this.displayedColumns = this.fieldService.getColumnsForListView(this.moduleName.toLowerCase());
     this.labelList = this.labelService.getFieldLabel(this.moduleName);
+    this.canCreate = this.authService.checkUserPermission(this.moduleName, 'UPSERT');
     this.listService.getListData(this.moduleName.toLowerCase()).subscribe((res) => {
       this.dataSource = new MatTableDataSource<any>(this.filterData(res.data.listData));
       this.totalRecords = this.filterData(res.data.listData).length;

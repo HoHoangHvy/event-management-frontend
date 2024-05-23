@@ -3,9 +3,10 @@
     <span>Notifications (<span id="notification-count">{{ totalRecords }}</span>)</span>
   </div>
   <div class="notification-body" id="notification-list">
-    <div class="noti-container" *ngFor="let noti of notificationList" (click)="redirectToParent(noti.parentId, noti.parentType, noti.newType)">
+    <div class="noti-container" *ngFor="let noti of notificationList" (click)="redirectToParent(noti.parentId, noti.parentType, noti.newType, noti.id)" [ngClass]="{'unread-noti': !noti.isRead}">
       <div class="noti-header">
-        {{noti.name}}
+        <span>{{noti.name}}</span>
+        <span class="unread-notice"></span>
       </div>
       <div class="noti-body">
         {{ noti.content }}

@@ -5,7 +5,7 @@
                                                                             cTooltip="Total of {{moduleName}}"
                                                                             [cTooltipVisible]="true"> ({{ totalRecords }})</span></c-col>
       <c-col [md]="6" class="list-view-action-group">
-        <button cButton color="primary" type="submit" (click)="navigateToCreate()">Create
+        <button cButton color="primary" type="submit" (click)="navigateToCreate()" *ngIf="canCreate">Create
           <c-icon class="icon-create" name="cilPlus"></c-icon>
         </button>
       </c-col>
