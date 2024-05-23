@@ -66,7 +66,6 @@ export class DefaultHeaderComponent extends HeaderComponent {
           this.haveUnreadNoti = true;
         }
         this.unreadTotal = res.data.listData.length;
-        console.log(this.unreadTotal)
       }
     );
   }

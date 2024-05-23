@@ -17,7 +17,6 @@ export class NewFeedContainerComponent {
   }
   ngOnInit() {
     this.showCreateButton = this.authService.checkUserPermission('News', 'UPSERT');
-    console.log(this.showCreateButton)
     this.route.queryParams.subscribe(params => {
       this.activeIndex = +params['activeIndex'] || 0;
     });

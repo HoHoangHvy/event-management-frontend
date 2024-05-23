@@ -29,7 +29,6 @@ export class SocketIoService {
     });
 
     this.socket.on('event-phenikaa', (msg) => {
-      console.log(123);
       callback(msg);  // Call the passed callback function with the message
     });
   }}

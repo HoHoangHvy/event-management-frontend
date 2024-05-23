@@ -74,6 +74,13 @@ export class LabelService {
       rejectReason: 'Reject reason',
       approveDate: 'Approve date',
     },
+    resources: {
+      totalQuantity: 'Total Quantity',
+      type: 'Type',
+      dateEntered: 'Date Entered',
+      status: 'Status',
+      name: 'Name',
+    },
   }
   getFieldLabel(moduleName: string): any {
     return this.globalLabelList[moduleName.toLowerCase()] || {};

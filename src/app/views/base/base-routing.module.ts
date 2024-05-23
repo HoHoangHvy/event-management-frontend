@@ -23,6 +23,7 @@ import {CreateViewComponent} from "../../components/create-view/create-view.comp
 import {AdminManagerComponent} from "../../components/admin-manager/admin-manager.component";
 import {NewFeedComponent} from "../../components/new-feed/new-feed.component";
 import {NewFeedContainerComponent} from "../../components/new-feed-container/new-feed-container.component";
+import {BookingScheduleComponent} from "../../components/booking-schedule/booking-schedule.component";
 
 const routes: Routes = [
   {
@@ -179,6 +180,10 @@ const routes: Routes = [
       {
         path: 'new-feed',
         component: NewFeedContainerComponent,
+      },
+      {
+        path: 'booking-schedule',
+        component: BookingScheduleComponent,
       }
     ],
   },

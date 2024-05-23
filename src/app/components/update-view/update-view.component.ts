@@ -49,7 +49,6 @@ export class UpdateViewComponent {
     this.isAdmin = this.userService.isAdmin();
     this.canDoAction = this.authService.checkUserPermission(this.moduleName, 'APPROVE');
     this.currentManagerDepartment = this.userService.getCurrentUser()?.departmentName || '';
-    console.log(this.currentManagerDepartment)
     try {
       this.displayedColumns = await this.fieldService.getFieldList(this.moduleName.toLowerCase());
       this.labelList = this.labelService.getFieldLabel(this.moduleName) || {};
@@ -59,7 +58,6 @@ export class UpdateViewComponent {
         this.isApproved = this.detailObject.status == 'Approved';
         this.isRejected = this.detailObject.status == 'Rejected';
         this.isPending = this.detailObject.status == 'Wait for approval';
-
         this.handleCustomView(this.detailObject);
       });
     } catch (error) {
@@ -188,7 +186,6 @@ export class UpdateViewComponent {
     this.tmpObject = object;
     let fieldDef = await this.fieldService.getFieldList('requestdepartments');
     let existDepartment = this.historyList.map((item: any) => item.departmentId);
-    console.log(existDepartment)
     this.departments = fieldDef[0].options.filter((item: any) => !existDepartment.includes(item.value));
     if (this.response && this.note && this.departmentId) {
       this.confirmationService.confirm({

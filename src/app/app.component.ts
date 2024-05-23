@@ -11,7 +11,9 @@ import {MessageService, PrimeNGConfig} from 'primeng/api';
 import {NotificationResponse} from "./models/NotificationResponse/notification-response";
 import {NotificationService} from "./services/notification/notification.service";
 import {SocketIoService} from "./services/SocketIO/socket-io.service";
+import { registerLicense } from '@syncfusion/ej2-base';
 
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhPYVF0WmFZfVpgdV9EaFZUQWY/P1ZhSXxXdkBhWn5dcnxQQGVVUkI=');
 
 @Component({
   selector: 'app-root',
@@ -41,7 +43,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {'' +
     this.socketIOService.initSocket('/notifications/HoHoangHvy/' + this.userService.getId(),
       (msg) => {
-        console.log(msg)
         this.messageService.add({severity:'info', summary:msg.name, detail:msg.content});
         this.notificationService.reloadNotifications()
       });

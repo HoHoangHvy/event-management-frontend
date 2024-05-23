@@ -133,7 +133,6 @@ export class AuthServiceService {
       console.error(`Action ${action} not found in permissions for module ${moduleName}`);
       return false;
     }
-    console.log(hasPermission)
 
     return hasPermission;
   }

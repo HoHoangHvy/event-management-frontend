@@ -76,9 +76,19 @@ import {NotificationComponent} from "../../components/notification/notification.
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {DialogModule} from "primeng/dialog";
 import {RecordViewComponent} from "../../components/record-view/record-view.component";
+import {
+  AgendaService,
+  DayService, MonthAgendaService,
+  MonthService,
+  ScheduleModule, TimelineMonthService, TimelineViewsService,
+  WeekService,
+  WorkWeekService
+} from '@syncfusion/ej2-angular-schedule';
+import {BookingScheduleComponent} from "../../components/booking-schedule/booking-schedule.component";
 
 @NgModule({
   imports: [
+    ScheduleModule,
     // CoreUI Modules
     AccordionModule,
     BadgeModule,
@@ -153,9 +163,10 @@ import {RecordViewComponent} from "../../components/record-view/record-view.comp
     NewFeedComponent,
     NewFeedContainerComponent,
     NotificationComponent,
-    RecordViewComponent
+    RecordViewComponent,
+    BookingScheduleComponent
   ],
-  providers: [IconSetService, MessageService, ConfirmationService],
+  providers: [IconSetService, MessageService, ConfirmationService, DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
   exports: [
     NotificationComponent
   ]

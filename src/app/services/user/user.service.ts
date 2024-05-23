@@ -37,7 +37,6 @@ export class UserService {
       dob : user.dob,
       email: user.email,
     }
-    console.log(empUpdateRequest)
     return this.httpClient.put(url, empUpdateRequest, {headers});
   }
   changePassword(oldPassword: any, newPassword: any) : Observable<Object> {

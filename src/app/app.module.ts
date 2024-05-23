@@ -78,15 +78,12 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService, 
     return httpClient.get<any>('http://localhost:8080/auth/me', { headers }).pipe(
       tap((response) => {
         const userData = response.data.user;
-        const dobDate = userData.employee.dob ? new Date(userData.employee.dob[0], userData.employee.dob[1] - 1, userData.employee.dob[2]) : new Date();
-        const startDate = userData.employee.startDate ? new Date(userData.employee.startDate[0], userData.employee.startDate[1] - 1, userData.employee.startDate[2]) : new Date();
-
         const user = new User(
           userData.id,
           userData.employee ? userData.employee.name : null,
           userData.userName,
           userData.status,
-          dobDate,
+          userData.employee.dob,
           userData.role,
           userData.employee ? userData.employee.email : null,
           userData.employee ? userData.employee.phone : null,
@@ -95,7 +92,7 @@ function initializeAppFactory(httpClient: HttpClient, userService: UserService, 
           userData.employee ? userData.employee.id : null,
           userData.employee ? userData.employee.empLevel : null,
           userData.employee ? userData.employee.departmentName : null,
-          startDate,
+          userData.employee.startDate,
           userData.userName === 'admin'
         );
 

@@ -14,7 +14,6 @@ export class CreateService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
     })
-    console.log(data)
     return this.http.post(this.baseUrl + 'api/' + moduleName, data, {headers})
   }
 

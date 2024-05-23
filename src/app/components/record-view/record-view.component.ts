@@ -36,7 +36,6 @@ export class RecordViewComponent {
     this.moduleName = this.capitalizeFirstLetter(this.moduleName);
     this.canUpsert = this.authService.checkUserPermission(this.moduleName, 'UPSERT');
     this.isAdmin = this.userService.isAdmin();
-    console.log(this.detailObject)
     try {
       this.displayedColumns = await this.fieldService.getFieldList(this.moduleName.toLowerCase());
       this.labelList = this.labelService.getFieldLabel(this.moduleName) || {};
@@ -57,9 +56,7 @@ export class RecordViewComponent {
       rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
       acceptButtonStyleClass: 'p-button-primary p-button-sm',
       accept: () => {
-        console.log(this.detailObject)
         this.detailService.updateDetailData(this.moduleName?.toLowerCase() || '', this.recordId, this.detailObject).subscribe((res: any) => {
-          console.log(res)
           this.messageService.add({severity:'success', summary:'Success', detail:'Successfully updated!'});
           if(this.moduleName == 'Requestdepartments') {
             this.detailObject.departmentId = res.data.departmentId;

@@ -398,7 +398,40 @@ export class FieldService {
         colSpan: '6',
         options: []
       },
-    ]
+    ],
+    resources: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'totalQuantity',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'type',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "Room", label: "Room"},
+          {value: "Document", label: "Document"},
+          {value: "Facilities", label: "Facilities"},
+        ]
+      },
+    ],
 
   };
   displayedColumns: any;
@@ -453,6 +486,7 @@ export class FieldService {
       users: ['userName', 'status', 'roleName', 'employeeName'],
       roles: ['name', 'dateEntered', 'totalUser'],
       requests: ['name', 'type', 'content', 'dateEntered', 'status', 'employeeName'],
+      resources: ['name', 'type', 'dateEntered', 'totalQuantity'],
     };
     return columns[moduleName] || [];
   }

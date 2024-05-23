@@ -193,8 +193,6 @@
       <c-col [md]="12">
         <button *ngIf="((!isApproved && !showApproveButton && !isRejected) || isAdmin) && canUpsert" cButton color="primary" (click)="saveInfo()">Save</button>
         <button *ngIf="(!showApproveButton || isAdmin) && canDelete" [style.margin-left]="!isApproved ? '10px' : '0px'" id="deleteButton" cButton color="danger" (click)="deleteInfo()">Delete</button>
-<!--        <button *ngIf="showApproveButton" [style.margin-left]="showApproveButton && isAdmin ? '10px' : '0px'" id="approveButton" cButton color="info" (click)="approveRequest()">Approve</button>-->
-<!--        <button *ngIf="showApproveButton" id="rejectButton" cButton color="warning" (click)="rejectRequest($event)">Reject</button>-->
       </c-col>
     </form>
     <p-confirmDialog></p-confirmDialog>

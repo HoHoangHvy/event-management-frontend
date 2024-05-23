@@ -72,8 +72,6 @@ export class CreateViewComponent {
                 .then(success => {
                   if (success) {
                     this.messageService.add({severity:'success', summary:'Success', detail:'Successfully created!'});
-                  } else {
-                    console.log('Navigation failed!');
                   }
                 })
                 .catch(err => {
@@ -115,6 +113,7 @@ export class CreateViewComponent {
     "Requests": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Resources": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "News": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "ResourceBooking": { "UPSERT": false, "VIEW": false, "DELETE": false },
   };
 
   validationCheck(column: any): boolean {

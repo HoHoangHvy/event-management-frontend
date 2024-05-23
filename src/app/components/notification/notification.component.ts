@@ -74,7 +74,6 @@ export class NotificationComponent {
   }
   updateIsRead(notiId: string) {
     this.detailService.updateDetailData('notifications', notiId, {isRead: true}).subscribe((res: any) => {
-      console.log('hello')
     });
   }
 }

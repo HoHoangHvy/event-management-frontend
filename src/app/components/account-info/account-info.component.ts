@@ -98,8 +98,6 @@ export class AccountInfoComponent {
   ngOnInit(): void {
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;
-      console.log(this.currentUser);
-
     });
   }
   updateInfoConfirm() {
@@ -126,7 +124,6 @@ export class AccountInfoComponent {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password does not match!' });
       return;
     }
-    console.log(this.newPassword, this.confirmPassword, this.oldPassword)
     if(this.newPassword == undefined || this.confirmPassword == undefined || this.oldPassword == undefined) {
       this.customStylesValidated = true;
       return;
