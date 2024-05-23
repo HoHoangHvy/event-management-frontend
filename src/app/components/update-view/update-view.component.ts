@@ -73,7 +73,6 @@ export class UpdateViewComponent {
         break;
       case 'Requests':
         this.historyList = object.requestDepartments;
-        console.log(this.historyList)
         break;
     }
   }
@@ -188,7 +187,9 @@ export class UpdateViewComponent {
     this.tempId = id;
     this.tmpObject = object;
     let fieldDef = await this.fieldService.getFieldList('requestdepartments');
-    this.departments = fieldDef[0].options;
+    let existDepartment = this.historyList.map((item: any) => item.departmentId);
+    console.log(existDepartment)
+    this.departments = fieldDef[0].options.filter((item: any) => !existDepartment.includes(item.value));
     if (this.response && this.note && this.departmentId) {
       this.confirmationService.confirm({
         message: 'Are you sure that you want to approve and forward this request?',
