@@ -322,6 +322,7 @@ export class FieldService {
         options: [
           {value: "Absent", label: "Absent"},
           {value: "Promotion", label: "Promotion"},
+          {value: "Resource", label: "Resource"},
           {value: "Other", label: "Other"},
         ]
       },

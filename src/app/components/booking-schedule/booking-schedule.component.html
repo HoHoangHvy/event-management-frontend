@@ -1,1 +1,63 @@
-<ejs-schedule> </ejs-schedule>
+<ejs-schedule #scheduleObj width='100%' height='550px' [selectedDate]='selectedDate' (popupOpen)='onPopupOpen($event)' [views]='views' [showQuickInfo]='showQuickInfo' [eventSettings]='eventSettings'>
+  <ng-template #editorHeaderTemplate let-data>
+    <div *ngIf="data.Subject; else createNewEvent">
+      Edit Booking Resource
+    </div>
+    <ng-template #createNewEvent>
+      Booking Resource
+    </ng-template>
+  </ng-template>
+  <ng-template #editorTemplate let-data>
+    <p-toast [life]="5000"  position="bottom-right"></p-toast>
+    <table class="custom-event-editor" width="100%" cellpadding="5">
+      <tbody>
+      <tr>
+        <td class="e-textlabel">Resource<span style="color:red">*</span></td>
+        <td colspan="4">
+          <ejs-dropdownlist id='ResourceId' class="e-field" data-name="ResourceId" placeholder='Choose Resource'
+                            [dataSource]='resourceData' [(ngModel)]='bookingModel.ResourceId' [value]='bookingModel.ResourceId' [fields]='fields'>
+          </ejs-dropdownlist>
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">Quantity<span style="color:red">*</span></td>
+        <td colspan="4">
+          <ejs-numerictextbox id="Quantity" class="e-field" data-name="Quantity" value="1" min="1" max="100" step="1"
+                              [(ngModel)]='bookingModel.Quantity'>
+          </ejs-numerictextbox>
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">From</td>
+        <td colspan="4">
+          <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
+                              (change)="onDateChange($event)" [(ngModel)]='bookingModel.StartTime'>
+          </ejs-datetimepicker>
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">To</td>
+        <td colspan="4">
+          <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
+                              (change)="onDateChange($event)" [(ngModel)]='bookingModel.EndTime'>
+          </ejs-datetimepicker>
+        </td>
+      </tr>
+      <tr>
+        <td class="e-textlabel">Reason<span style="color:red">*</span></td>
+        <td colspan="4">
+                    <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+                              [(ngModel)]='bookingModel.Description' style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-template>
+  <ng-template #editorFooterTemplate>
+    <div id="right-button">
+      <button id="Cancel" class="e-control e-btn e-second-button"  data-ripple="true">Cancel</button>
+      <button id="Save" class="e-control e-btn e-primary" data-ripple="true">Save</button>
+    </div>
+  </ng-template>
+</ejs-schedule>
+<p-toast [life]="5000" key="success"></p-toast>

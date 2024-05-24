@@ -85,6 +85,9 @@ import {
   WorkWeekService
 } from '@syncfusion/ej2-angular-schedule';
 import {BookingScheduleComponent} from "../../components/booking-schedule/booking-schedule.component";
+import {DateTimePickerModule} from "@syncfusion/ej2-angular-calendars";
+import {DropDownListModule} from "@syncfusion/ej2-angular-dropdowns";
+import {NumericTextBoxModule} from "@syncfusion/ej2-angular-inputs";
 
 @NgModule({
   imports: [
@@ -136,7 +139,11 @@ import {BookingScheduleComponent} from "../../components/booking-schedule/bookin
     IconDirective,
     AvatarModule,
     ConfirmPopupModule,
-    DialogModule
+    DialogModule,
+    DateTimePickerModule,
+    DropDownListModule,
+    NumericTextBoxModule,
+    ButtonModule
   ],
   declarations: [
     AccordionsComponent,
