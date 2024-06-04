@@ -1,0 +1,63 @@
+.hidden {
+  display: none;
+}
+::ng-deep .e-dlg-content {
+  background: transparent;
+}
+::ng-deep .e-footer-content {
+  background: transparent;
+}
+::ng-deep .e-dlg-header-content {
+  background: transparent;
+}
+::ng-deep .e-checkbox-wrapper .e-frame, .e-css.e-checkbox-wrapper .e-frame {
+  width: 15px !important;
+  height: 15px !important;
+}
+::ng-deep .e-popup.e-popup-open.e-dialog {
+  border-radius: 12px;
+  height: 450px !important;
+  width: 600px !important;
+}
+.add-button {
+  background-color: #007bff;
+  float: right;
+  padding: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 4px;
+}
+.remove-button {
+  float: right;
+  padding: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+/* Header styles */
+.event-detail-editor thead th {
+  background-color: #f2f2f2;
+  padding: 5px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Body styles */
+.event-detail-editor tbody td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+.button-action {
+  height: 30px
+}
+.none-border {
+  border: none !important;
+  border-width: 0px !important;
+}
+.none-border span {
+  border: none !important;
+  border-width: 0px !important;
+}

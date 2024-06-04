@@ -2,14 +2,12 @@
 <ng-container>
   <c-container [fluid]="true">
     <c-nav variant="pills" class="d-none d-lg-flex me-auto">
-      <div *ngFor="let module of displayModuleList">
-        <c-nav-item>
-          <a cNavLink routerLink="{{ module.route }}" routerLinkActive="active">
+        <c-nav-item *ngFor="let module of displayModuleList">
+          <a id="{{ module.moduleName }}" cNavLink routerLink="{{ module.route }}" routerLinkActive="active" (click)="setActive($event)">
             <svg cIcon class="me-2" name="{{ module.icon }}"></svg>
             {{ module.moduleName }}
           </a>
         </c-nav-item>
-      </div>
       <ng-container *ngTemplateOutlet="moduleDropdown"></ng-container>
     </c-nav>
     <c-header-nav class="d-none d-lg-flex">

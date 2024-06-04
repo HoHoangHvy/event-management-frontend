@@ -5,3 +5,13 @@
     --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);
   }
 }
+
+.custom-body {
+  display: block;
+  width: 1400px;
+  max-width: 1400px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
+  min-width: 0px;
+}

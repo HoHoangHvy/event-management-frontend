@@ -96,24 +96,26 @@ export class CreateViewComponent {
 
   }
   permissionModel: any = {
-    // "Contracts": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Customers": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Contracts": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Customers": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Departments": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Dishes": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Dishes": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Employees": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "EventDetails": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Events": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Facilities": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Payments": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Roles": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Tasks": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "ThirdParties": { "UPSERT": false, "VIEW": false, "DELETE": false },
-    // "Users": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "EventDetails": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Events": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Facilities": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Payments": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Roles": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Tasks": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Thirdparties": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Users": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Notifications": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Requests": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "Resources": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "News": { "UPSERT": false, "VIEW": false, "DELETE": false },
     "ResourceBooking": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "EventBooking": { "UPSERT": false, "VIEW": false, "DELETE": false },
+    "Halls": { "UPSERT": false, "VIEW": false, "DELETE": false }
   };
 
   validationCheck(column: any): boolean {

@@ -81,6 +81,43 @@ export class LabelService {
       status: 'Status',
       name: 'Name',
     },
+    dishes: {
+      price: 'Price',
+      cost: 'Cost',
+      dateEntered: 'Date Entered',
+      unit: 'Unit',
+      name: 'Name',
+    },
+    thirdparties: {
+      price: 'Price',
+      cost: 'Cost',
+      dateEntered: 'Date Entered',
+      name: 'Name',
+      type: 'Type',
+      supplier: 'Supplier',
+    },
+    facilities: {
+      price: 'Price',
+      total: 'Total Quantity',
+      dateEntered: 'Date Entered',
+      name: 'Name',
+      type: 'Type',
+    },
+    halls: {
+      name: 'Hall Name',
+      scale: 'Scale',
+      location: 'Location',
+      dateEntered: 'Date Entered',
+      inUse: 'In Use',
+    },
+    customers: {
+      name: 'Customer name',
+      type: 'Type',
+      dob: 'Date of brith',
+      dateEntered: 'Date Entered',
+      phone: 'Phone',
+      email: 'Email',
+    },
   }
   getFieldLabel(moduleName: string): any {
     return this.globalLabelList[moduleName.toLowerCase()] || {};

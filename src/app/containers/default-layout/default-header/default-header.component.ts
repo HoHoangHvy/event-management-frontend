@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, HostListener, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, HostListener, Input, Renderer2} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Module } from 'src/app/models/module/module'
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
@@ -21,6 +21,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   @Input() sidebarId: string = "sidebar";
   hideDropdown: boolean = false;
+  private activeElement: any;
   showAdminSetting: boolean = this.userService.isAdmin();
   public icons!: [string, string[]][];
   public newNotifications = new Array(5)
@@ -37,7 +38,8 @@ export class DefaultHeaderComponent extends HeaderComponent {
               public router: Router,
               private toastr: ToastrService,
               private userService: UserService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private renderer: Renderer2) {
     super();
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
     const moduleListJson = localStorage.getItem('moduleList');
@@ -58,6 +60,18 @@ export class DefaultHeaderComponent extends HeaderComponent {
     this.subscription = this.notificationService.reloadNotifications$.subscribe(() => {
       this.loadUnreadNoti();
     });
+  }
+  setActive(event: any) {
+    // Remove active class from the previously active element
+    if (this.activeElement) {
+      this.renderer.removeClass(this.activeElement, 'active');
+    }
+
+    // Add active class to the clicked element
+    this.renderer.addClass(event.currentTarget, 'active');
+
+    // Store the currently active element
+    this.activeElement = event.currentTarget;
   }
   loadUnreadNoti() {
     this.notificationService.getUnreadNoti().subscribe(

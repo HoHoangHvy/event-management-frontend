@@ -24,6 +24,7 @@ import {AdminManagerComponent} from "../../components/admin-manager/admin-manage
 import {NewFeedComponent} from "../../components/new-feed/new-feed.component";
 import {NewFeedContainerComponent} from "../../components/new-feed-container/new-feed-container.component";
 import {BookingScheduleComponent} from "../../components/booking-schedule/booking-schedule.component";
+import {EventBookingComponent} from "../../components/event-booking/event-booking.component";
 
 const routes: Routes = [
   {
@@ -184,6 +185,10 @@ const routes: Routes = [
       {
         path: 'booking-schedule',
         component: BookingScheduleComponent,
+      },
+      {
+        path: 'booking-event',
+        component: EventBookingComponent,
       }
     ],
   },

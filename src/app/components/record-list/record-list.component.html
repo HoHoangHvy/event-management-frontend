@@ -1,5 +1,5 @@
-<ng-container>
-  <c-card [ngClass]="{'no-header': !showHeader, 'no-border': !showBorder}">
+<div style="width: 100%;">
+  <c-card [ngClass]="{'no-header': !showHeader, 'no-border': !showBorder}" class="list-container">
     <c-card-header class="list-view-header" *ngIf="showHeader">
       <c-col [md]="6" class="module-name-container"> {{ moduleName }} <span style="padding-left: 5px"
                                                                             cTooltip="Total of {{moduleName}}"
@@ -10,24 +10,26 @@
         </button>
       </c-col>
     </c-card-header>
-    <c-card-body [ngClass]="{'no-header': !showHeader}">
+    <c-card-body [ngClass]="{'no-header': !showHeader}" class="custom-card-body">
       <span *ngIf="totalRecords == 0" style="text-align: center; font-style: italic;">Empty data</span>
-      <table id="listTable" [ngClass]="{'hidden': !showTable}" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="announceSortChange($event)">
-        <!-- Dynamic Column Definition -->
-        <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by {{labelList[col]}}"> {{ labelList[col] }}</th>
-          <td mat-cell *matCellDef="let element"> {{ element[col] }}</td>
-        </ng-container>
+      <div class="table-container">
+        <table id="listTable" [ngClass]="{'hidden': !showTable}" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="announceSortChange($event)">
+          <!-- Dynamic Column Definition -->
+          <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by {{labelList[col]}}"> {{ labelList[col] }}</th>
+            <td mat-cell *matCellDef="let element"> {{ element[col] }}</td>
+          </ng-container>
 
-        <!-- Header and Row Definitions -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row (click)="navigateToDetail(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-      <mat-paginator #paginator [ngClass]="{'hidden': !showTable}" [pageSizeOptions]="[5, 10, 20]"
+          <!-- Header and Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row (click)="navigateToDetail(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <mat-paginator #paginator [ngClass]="{'hidden': !showTable}" [pageSizeOptions]="[20]"
                      showFirstLastButtons
                      aria-label="Select page of periodic elements">
       </mat-paginator>
     </c-card-body>
     <p-toast [life]="5000"></p-toast>
   </c-card>
-</ng-container>
+</div>

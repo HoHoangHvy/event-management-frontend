@@ -1,0 +1,119 @@
+<ejs-schedule #scheduleObj width='100%' height='550px' [selectedDate]='selectedDate' (popupOpen)='onPopupOpen($event)' [views]='views' [showQuickInfo]='showQuickInfo' [eventSettings]='eventSettings'>
+  <ng-template #editorHeaderTemplate let-data>
+    <div *ngIf="data.Subject; else createNewEvent">
+      Edit Booking Resource
+    </div>
+    <ng-template #createNewEvent>
+      <span id="editor-header" #editorHeader> Booking Event </span>
+    </ng-template>
+  </ng-template>
+  <ng-template #editorTemplate let-data>
+    <p-toast [life]="5000"  position="bottom-right"></p-toast>
+    <div *ngIf="currentPage === 1">
+      <table class="custom-event-editor" width="100%" cellpadding="5">
+        <tbody>
+        <tr>
+          <td class="e-textlabel">Hall<span style="color:red">*</span></td>
+          <td colspan="4">
+            <ejs-dropdownlist id='ResourceId' class="e-field" data-name="ResourceId" placeholder='Choose Hall'
+                              [dataSource]='hallData' [value]='bookingModel.ResourceId' [fields]='fields'>
+            </ejs-dropdownlist>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-textlabel">Customer<span style="color:red">*</span></td>
+          <td colspan="4">
+            <ejs-dropdownlist id='CustomerId' class="e-field" data-name="ResourceId" placeholder='Choose Customer'
+                              [dataSource]='customerData' [value]='bookingModel.CustomerId' [fields]='fields'>
+            </ejs-dropdownlist>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-textlabel">Type<span style="color:red">*</span></td>
+          <td colspan="4">
+            <ejs-dropdownlist id='Type' class="e-field" data-name="ResourceId" placeholder='Choose Type'
+                              [dataSource]='eventTypes' [value]='bookingModel.eventType' [fields]='fields'>
+            </ejs-dropdownlist>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-textlabel">From</td>
+          <td colspan="4">
+            <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
+                                (change)="onDateChange($event)" [(ngModel)]='bookingModel.StartTime'>
+            </ejs-datetimepicker>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-textlabel">To</td>
+          <td colspan="4">
+            <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
+                                (change)="onDateChange($event)" [(ngModel)]='bookingModel.EndTime'>
+            </ejs-datetimepicker>
+          </td>
+        </tr>
+        <tr>
+          <td class="e-textlabel">Description<span style="color:red">*</span></td>
+          <td colspan="4">
+                    <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+                              [(ngModel)]='bookingModel.Description' style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="currentPage === 2">
+      <div class="button-action">
+        <button class="e-control e-btn e-primary add-button" data-ripple="true" (click)="addRow()">
+          <svg cIcon name="cilPlus"></svg>
+        </button>
+        <button class="e-control e-btn e-primary remove-button" data-ripple="true" (click)="removeSelectedRows()">
+          <svg cIcon name="cilTrash"></svg>
+        </button>
+      </div>
+
+      <table class="event-detail-editor" width="100%" cellpadding="5">
+        <thead>
+        <tr>
+          <th style="width: 5%; padding-right: 8px;">
+            <ejs-checkbox [(ngModel)]="checkAll" (change)="toggleCheckAll()"></ejs-checkbox>
+          </th>
+          <th style="width: 30%;">Facility</th>
+          <th style="width: 30%;">Price</th>
+          <th style="width: 10%;">Quantity</th>
+          <th style="width: 25%;">Total value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let detail of eventDetails; let i = index">
+          <td style="width: 5%;">
+            <ejs-checkbox [(ngModel)]="detail.selected"></ejs-checkbox>
+          </td>
+          <td style="width: 30%; padding-bottom: 0px;">
+            <ejs-dropdownlist (change) = "onFacilityChange($event, i)" id='SelectField{{i}}' class="e-field none-border" [(ngModel)]='detail.selectValue' [dataSource]='facilityData' placeholder='Choose option'>
+            </ejs-dropdownlist>
+          </td>
+          <td style="width: 30%;">
+            <span id="price{{i}}">{{ detail.price | currency:'VND':'symbol':'1.2-2' }}</span>
+          </td>
+          <td style="width: 10%; padding-bottom: 0px;">
+            <input type="number" class="e-field e-input none-border" [(ngModel)]='detail.quantityValue' [min]="0"/>
+          </td>
+          <td style="width: 25%;">
+            <span id="totalValue{{i}}">{{detail.price * detail.quantityValue | currency:'VND':'symbol':'1.2-2' }}</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+  <ng-template #editorFooterTemplate>
+    <div id="right-button">
+      <button id="Cancel" class="e-control e-btn e-second-button" data-ripple="true">Cancel</button>
+      <button *ngIf="currentPage > 1" (click)="previousPage()" class="e-control e-btn e-second-button" data-ripple="true">Back</button>
+      <button *ngIf="currentPage < 2" (click)="nextPage()" style="background-color: #321fdb;" class="e-control e-btn e-primary" data-ripple="true">Next</button>
+      <button id="Save" [ngClass]="{'hidden': currentPage !== 2}" style="background-color: #321fdb;" class="e-control e-btn e-primary" data-ripple="true">Save</button>
+    </div>
+  </ng-template>
+</ejs-schedule>
+<p-toast [life]="5000" key="success"></p-toast>

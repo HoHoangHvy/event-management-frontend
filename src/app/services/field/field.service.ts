@@ -132,7 +132,7 @@ export class FieldService {
         isDate: false,
         isText: false,
         isGroup: false,
-        isDisabled: false,
+        isDisabled: true,
         options: [
           {value: "Draft", label: "Draft"},
           {value: "Contracted", label: "Contracted"},
@@ -433,8 +433,241 @@ export class FieldService {
         ]
       },
     ],
-
+    dishes: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'price',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'cost',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'unit',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "chai", label: "chai"},
+          {value: "phan", label: "phần"},
+          {value: "loc", label: "lốc"},
+          {value: "thung", label: "thùng"},
+        ]
+      },
+    ],
+    thirdparties: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'price',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'cost',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'supplier',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'type',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "Decoration", label: "Decoration"},
+          {value: "Music", label: "Music"},
+          {value: "Stage", label: "Stage"},
+          {value: "Entertainment", label: "Entertainment"},
+        ]
+      },
+    ],
+    facilities: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'price',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'total',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'type',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '4',
+        options: [
+          {value: "Hall", label: "Hall"},
+          {value: "Decoration", label: "Decoration"},
+          {value: "Table", label: "Table"},
+          {value: "Chair", label: "Chair"},
+          {value: "Eating tool", label: "Eating tool"},
+          {value: "Other", label: "Other"},
+        ]
+      },
+    ],
+    halls: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'scale',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'location',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'inUse',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4',
+        options: [
+          { value: true, label: "In Use" },
+          { value: false, label: "Not in Use" }
+        ]
+      },
+    ],
+    customers: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'phone',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'email',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'dob',
+        isSelect: false,
+        isDate: true,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4'
+      },
+      {
+        name: 'type',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4',
+        options: [
+          { value: "Lead", label: "Lead" },
+          { value: "Official", label: "Official" }
+        ]
+      },
+    ],
   };
+
   displayedColumns: any;
   constructor(private userService: UserService, private detailService: DetailService, private route: ActivatedRoute) { }
 
@@ -488,6 +721,11 @@ export class FieldService {
       roles: ['name', 'dateEntered', 'totalUser'],
       requests: ['name', 'type', 'content', 'dateEntered', 'status', 'employeeName'],
       resources: ['name', 'type', 'dateEntered', 'totalQuantity'],
+      dishes: ['name', 'price', 'cost', 'unit', 'dateEntered'],
+      facilities: ['name', 'type', 'total', 'price', 'dateEntered'],
+      thirdparties: ['name', 'supplier', 'cost', 'price', 'type', 'dateEntered'],
+      halls: ['name', 'scale', 'location', 'dateEntered', 'inUse'],
+      customers: ['name', 'phone', 'email', 'type', 'dob', 'dateEntered'],
     };
     return columns[moduleName] || [];
   }

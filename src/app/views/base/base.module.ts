@@ -88,63 +88,66 @@ import {BookingScheduleComponent} from "../../components/booking-schedule/bookin
 import {DateTimePickerModule} from "@syncfusion/ej2-angular-calendars";
 import {DropDownListModule} from "@syncfusion/ej2-angular-dropdowns";
 import {NumericTextBoxModule} from "@syncfusion/ej2-angular-inputs";
+import {EventBookingComponent} from "../../components/event-booking/event-booking.component";
+import {CheckBoxModule} from "@syncfusion/ej2-angular-buttons";
 
 @NgModule({
-  imports: [
-    ScheduleModule,
-    // CoreUI Modules
-    AccordionModule,
-    BadgeModule,
-    BreadcrumbModule,
-    ButtonGroupModule,
-    ButtonModule,
-    CardModule,
-    CollapseModule,
-    DropdownModule,
-    FormModule,
-    GridModule,
-    ListGroupModule,
-    NavModule,
-    PaginationModule,
-    PlaceholderModule,
-    PopoverModule,
-    ProgressModule,
-    SharedModule,
-    SpinnerModule,
-    TableModule,
-    TabsModule,
-    TooltipModule,
-    UtilitiesModule,
-    CarouselModule,
-    DocsComponentsModule,
+    imports: [
+        ScheduleModule,
+        // CoreUI Modules
+        AccordionModule,
+        BadgeModule,
+        BreadcrumbModule,
+        ButtonGroupModule,
+        ButtonModule,
+        CardModule,
+        CollapseModule,
+        DropdownModule,
+        FormModule,
+        GridModule,
+        ListGroupModule,
+        NavModule,
+        PaginationModule,
+        PlaceholderModule,
+        PopoverModule,
+        ProgressModule,
+        SharedModule,
+        SpinnerModule,
+        TableModule,
+        TabsModule,
+        TooltipModule,
+        UtilitiesModule,
+        CarouselModule,
+        DocsComponentsModule,
 
-    // Material Modules
-    MatTableModule,
-    MatPaginatorModule,
-    MatDatepickerModule,
+        // Material Modules
+        MatTableModule,
+        MatPaginatorModule,
+        MatDatepickerModule,
 
-    // Angular Modules
-    CommonModule,
-    ReactiveFormsModule,
+        // Angular Modules
+        CommonModule,
+        ReactiveFormsModule,
 
-    // Custom Module
-    BaseRoutingModule,
-    IconComponent,
-    MatSortHeader,
-    MatSort,
-    FormsModule,
-    ConfirmDialogModule,
-    ToastModule,
-    CalendarModule,
-    IconDirective,
-    AvatarModule,
-    ConfirmPopupModule,
-    DialogModule,
-    DateTimePickerModule,
-    DropDownListModule,
-    NumericTextBoxModule,
-    ButtonModule
-  ],
+        // Custom Module
+        BaseRoutingModule,
+        IconComponent,
+        MatSortHeader,
+        MatSort,
+        FormsModule,
+        ConfirmDialogModule,
+        ToastModule,
+        CalendarModule,
+        IconDirective,
+        AvatarModule,
+        ConfirmPopupModule,
+        DialogModule,
+        DateTimePickerModule,
+        DropDownListModule,
+        NumericTextBoxModule,
+        ButtonModule,
+        CheckBoxModule
+    ],
   declarations: [
     AccordionsComponent,
     BreadcrumbsComponent,
@@ -171,7 +174,8 @@ import {NumericTextBoxModule} from "@syncfusion/ej2-angular-inputs";
     NewFeedContainerComponent,
     NotificationComponent,
     RecordViewComponent,
-    BookingScheduleComponent
+    BookingScheduleComponent,
+    EventBookingComponent
   ],
   providers: [IconSetService, MessageService, ConfirmationService, DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
   exports: [
