@@ -7,14 +7,28 @@ import { isNullOrUndefined } from '@syncfusion/ej2-base';
 import {CreateService} from "../../services/crud/create/create.service";
 import {MessageService} from "primeng/api";
 import {UserService} from "../../services/user/user.service";
-interface Facility {
+interface OptionObject {
   text: string;
   id: string;
   availableQuantity: number;
   price: number;
 }
 
-interface EventDetail {
+interface FacilityDetail {
+  selected: boolean;
+  selectValue: string;
+  price: number;
+  quantityValue: number;
+  totalValue: number;
+}
+interface DishDetail {
+  selected: boolean;
+  selectValue: string;
+  price: number;
+  quantityValue: number;
+  totalValue: number;
+}
+interface ThirdpartyDetail {
   selected: boolean;
   selectValue: string;
   price: number;
@@ -32,7 +46,9 @@ export class EventBookingComponent {
   public eventSettings: EventSettingsModel = {};
   public hallData: Object[] = [];
   public customerData: Object[] = [];
-  public facilityData: Facility[] = [];
+  public facilityData: OptionObject[] = [];
+  public dishData: OptionObject[] = [];
+  public thirdpartyData: OptionObject[] = [];
   public showQuickInfo: boolean = false;
   public startDate!: Date;
   public endDate!: Date;
@@ -41,7 +57,16 @@ export class EventBookingComponent {
   public checkAll: any;
   public tempEnd: any;
   public currentPage: number = 1;
-  eventDetails: EventDetail[] = [
+  public totalDishValue: number = 0;
+  public totalFacilityValue: number = 0;
+  public totalThirdpartyValue: number = 0;
+  facilityDetails: FacilityDetail[] = [
+    { selected: false, selectValue: '', price: 0, quantityValue: 0, totalValue: 0}
+  ];
+  dishDetails: DishDetail[] = [
+    { selected: false, selectValue: '', price: 0, quantityValue: 0, totalValue: 0}
+  ];
+  thirdpartyDetails: ThirdpartyDetail[] = [
     { selected: false, selectValue: '', price: 0, quantityValue: 0, totalValue: 0}
   ];
   public eventTypes: any =  [
@@ -72,20 +97,38 @@ export class EventBookingComponent {
 
   removeSelectedRows() {
     this.checkAll = false;
-    this.eventDetails = this.eventDetails.filter(detail => !detail.selected);
+    if(this.currentPage === 2){
+      this.facilityDetails = this.facilityDetails.filter(detail => !detail.selected);
+    } else if (this.currentPage === 3) {
+      this.dishDetails = this.dishDetails.filter(detail => !detail.selected);
+      this.calDishGrandTotal()
+    } else if (this.currentPage === 4) {
+      this.thirdpartyDetails = this.thirdpartyDetails.filter(detail => !detail.selected);
+    }
   }
 
   nextPage() {
-    if (this.currentPage < 2) {
+    if (this.currentPage < 5) {
       this.currentPage++;
     }
     this.changeEditorHeader(this.headerList[this.currentPage]);
   }
   toggleCheckAll() {
     this.checkAll = !this.checkAll;
-    this.eventDetails.forEach(detail => {
-      detail.selected = this.checkAll;
-    });
+    if(this.currentPage === 2){
+      this.facilityDetails.forEach(detail => {
+        detail.selected = this.checkAll;
+      });
+    } else if (this.currentPage === 3) {
+      this.dishDetails.forEach(detail => {
+        detail.selected = this.checkAll;
+      });
+    } else if (this.currentPage === 4) {
+      this.thirdpartyDetails.forEach(detail => {
+        detail.selected = this.checkAll;
+      });
+    }
+
   }
   changeEditorHeader(newContent: string) {
     // @ts-ignore
@@ -93,8 +136,16 @@ export class EventBookingComponent {
   }
   // Thêm hàng vào bảng chi tiết sự kiện
   addRow() {
-    // @ts-ignore
-    this.eventDetails.push({ selectValue: '', inputValue: '', quantityValue: 0, totalValue: 0 });
+    if(this.currentPage === 2){
+      // @ts-ignore
+      this.facilityDetails.push({ selectValue: '',  price: 0, quantityValue: 0, totalValue: 0});
+    } else if (this.currentPage === 3) {
+      // @ts-ignore
+      this.dishDetails.push({ selectValue: '',  price: 0, quantityValue: 0, totalValue: 0});
+    } else if (this.currentPage === 4) {
+      // @ts-ignore
+      this.thirdpartyDetails.push({ selectValue: '', price: 0, quantityValue: 0, totalValue: 0});
+    }
   }
   previousPage() {
     if (this.currentPage > 1) {
@@ -122,10 +173,38 @@ export class EventBookingComponent {
         return { text: item.name + " (Available: " + item.availableQuantity + ")", id: item.id, availableQuantity: item.availableQuantity, price: item.price};
       });
     });
+    this.http.get<any>(`http://localhost:8080/api/dishes`, { headers }).subscribe(res => {
+      this.dishData = res.data.listData.map((item: any) => {
+        return { text: item.name, id: item.id, price: item.price};
+      });
+    });
+    this.http.get<any>(`http://localhost:8080/api/thirdparties`, { headers }).subscribe(res => {
+      this.thirdpartyData = res.data.listData.map((item: any) => {
+        return { text: item.name, id: item.id, price: item.price};
+      });
+    });
   }
   onFacilityChange(event: any, index: number) {
-      this.eventDetails[index].price = event.itemData.price;
-      this.eventDetails[index].quantityValue = 1;
+      this.facilityDetails[index].price = event.itemData.price;
+      this.facilityDetails[index].quantityValue = 1;
+  }
+  onDishChange(event: any, index: number) {
+      this.dishDetails[index].price = event.itemData.price;
+      this.dishDetails[index].quantityValue = 1;
+      this.totalDishValue = this.dishDetails.reduce((acc, item) => { return acc + item.price * item.quantityValue}, 0);
+  }
+  calDishGrandTotal() {
+    this.totalDishValue = this.dishDetails.reduce((acc, item) => { return acc + item.price * item.quantityValue || acc}, 0);
+  }
+  calFacilityGrandTotal() {
+    this.totalFacilityValue = this.facilityDetails.reduce((acc, item) => { return acc + item.price * item.quantityValue || acc}, 0);
+  }
+  calThirdpartyGrandTotal() {
+    this.totalThirdpartyValue = this.thirdpartyDetails.reduce((acc, item) => { return acc + item.price * item.quantityValue || acc}, 0);
+  }
+  onThirdpartyChange(event: any, index: number) {
+      this.thirdpartyDetails[index].price = event.itemData.price;
+      this.thirdpartyDetails[index].quantityValue = 1;
   }
   private fetchEventData() {
     this.listService.getListData('resource-bookings').subscribe((res) => {
