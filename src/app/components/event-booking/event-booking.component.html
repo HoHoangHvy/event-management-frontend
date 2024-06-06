@@ -1,5 +1,49 @@
-<ejs-schedule #scheduleObj width='100%' height='550px' [selectedDate]='selectedDate' (popupOpen)='onPopupOpen($event)'
-              [views]='views' [showQuickInfo]='showQuickInfo' [eventSettings]='eventSettings'>
+<ejs-schedule cssClass='schedule-cell-dimension' #scheduleObj width='100%' height='620px' [selectedDate]='selectedDate' (popupOpen)='onPopupOpen($event)'
+              [views]='views' [eventSettings]='eventSettings' (eventRendered)="applyCategoryColor($event)">
+
+  <!-- Header template -->
+  <ng-template #quickInfoTemplatesHeader let-data>
+    <div *ngIf="data.elementType == 'cell' || data.elementType == 'event'">
+      <div class="e-popup-header" style="background: {{data.CategoryColor}}">
+        <div class="e-header-icon-wrapper">
+          <div *ngIf="data.elementType == 'event'" class="subject">
+            <div class="e-subject-wrap">
+              <div class="e-subject">{{ data.Subject }}</div>
+            </div>
+          </div>
+          <button class="e-close e-close-icon e-icons" title="Close" (click)="onCloseClick()"></button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Content Template -->
+  <ng-template #quickInfoTemplatesContent let-data>
+    <div *ngIf="data.elementType == 'cell'" class="e-cell-content">
+      <form class="e-schedule-form">
+        <div style="padding:10px">
+          <input class="subject e-field e-input" type="text" name="Subject" placeholder="Title" style="width:100%">
+        </div>
+        <div style="padding:10px">
+          <input class="location e-field e-input" type="text" name="Location" placeholder="Location" style="width:100%">
+        </div>
+      </form>
+    </div>
+    <div *ngIf="data.elementType == 'event'" class="e-event-content">
+      <div class="start-time">Time: {{getTimeString(data.StartTime)}} - {{getTimeString(data.EndTime)}}</div>
+      <div class="event-status">Status: {{ data.Status }}</div>
+      <div class="event-status">Created By: {{ data.CreateBy }}</div>
+    </div>
+  </ng-template>
+  <ng-template #quickInfoTemplatesFooter let-data>
+    <div *ngIf="data.elementType == 'event'" class="e-cell-footer">
+      <div class="btn-container">
+        <button cButton class="popup-footer-button" color="secondary" title="Edit event" (click)="onDetailsClick(data)">Edit</button>
+        <button cButton class="popup-footer-button" title="Approve" (click)="onAddClick($event)">Approve</button>
+      </div>
+    </div>
+  </ng-template>
+
+
   <ng-template #editorHeaderTemplate let-data>
     <div *ngIf="data.Subject; else createNewEvent">
       Edit Booking Resource
@@ -11,13 +55,13 @@
   <ng-template #editorTemplate let-data>
     <p-toast [life]="5000" position="bottom-right"></p-toast>
     <div *ngIf="currentPage === 1">
-      <table class="custom-event-editor" width="100%" cellpadding="5">
+      <table width="100%" cellpadding="5">
         <tbody>
         <tr>
           <td class="e-textlabel">Hall<span style="color:red">*</span></td>
           <td colspan="4">
             <ejs-dropdownlist id='ResourceId' class="e-field" data-name="ResourceId" placeholder='Choose Hall'
-                              [dataSource]='hallData' [value]='bookingModel.ResourceId' [fields]='fields'>
+                              [dataSource]='hallData' [(ngModel)]="eventModel.hallId" [value]='eventModel.hallId' [fields]='fields'>
             </ejs-dropdownlist>
           </td>
         </tr>
@@ -25,7 +69,7 @@
           <td class="e-textlabel">Customer<span style="color:red">*</span></td>
           <td colspan="4">
             <ejs-dropdownlist id='CustomerId' class="e-field" data-name="ResourceId" placeholder='Choose Customer'
-                              [dataSource]='customerData' [value]='bookingModel.CustomerId' [fields]='fields'>
+                              [dataSource]='customerData' [(ngModel)]="eventModel.customerId" [value]='eventModel.customerId' [fields]='fields'>
             </ejs-dropdownlist>
           </td>
         </tr>
@@ -33,31 +77,31 @@
           <td class="e-textlabel">Type<span style="color:red">*</span></td>
           <td colspan="4">
             <ejs-dropdownlist id='Type' class="e-field" data-name="ResourceId" placeholder='Choose Type'
-                              [dataSource]='eventTypes' [value]='bookingModel.eventType' [fields]='fields'>
+                              [dataSource]='eventTypes' [(ngModel)]="eventModel.type" [value]="eventModel.type" [fields]='fields'>
             </ejs-dropdownlist>
           </td>
         </tr>
         <tr>
-          <td class="e-textlabel">From</td>
+          <td class="e-textlabel">From<span style="color:red">*</span></td>
           <td colspan="4">
             <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
-                                (change)="onDateChange($event)" [(ngModel)]='bookingModel.StartTime'>
+                                (change)="onDateChange($event)" [(ngModel)]="eventModel.startDate">
             </ejs-datetimepicker>
           </td>
         </tr>
         <tr>
-          <td class="e-textlabel">To</td>
+          <td class="e-textlabel">To<span style="color:red">*</span></td>
           <td colspan="4">
             <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
-                                (change)="onDateChange($event)" [(ngModel)]='bookingModel.EndTime'>
+                                (change)="onDateChange($event)" [(ngModel)]="eventModel.endDate">
             </ejs-datetimepicker>
           </td>
         </tr>
         <tr>
-          <td class="e-textlabel">Description<span style="color:red">*</span></td>
+          <td class="e-textlabel">Description</td>
           <td colspan="4">
                     <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                              [(ngModel)]='bookingModel.Description'
+                              [(ngModel)]='eventModel.description'
                               style="width: 100%; height: 60px !important; resize: vertical"></textarea>
           </td>
         </tr>
@@ -87,7 +131,7 @@
           </tr>
           </thead>
           <tbody  style="height: 245px">
-          <tr *ngFor="let detailFacility of facilityDetails; let i = index">
+          <tr *ngFor="let detailFacility of eventModel.facilityDetails; let i = index">
             <td style="width: 5%;">
               <ejs-checkbox [(ngModel)]="detailFacility.selected"></ejs-checkbox>
             </td>
@@ -102,7 +146,7 @@
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calFacilityGrandTotal()" class="e-field e-input none-border"
-                     [(ngModel)]='detailFacility.quantityValue' [min]="0"/>
+                     [(ngModel)]='detailFacility.quantityValue' [min]="1"/>
             </td>
             <td style="width: 25%;">
               <span
@@ -141,7 +185,7 @@
           </tr>
           </thead>
           <tbody  style="height: 245px">
-          <tr *ngFor="let detailDish of dishDetails; let i = index">
+          <tr *ngFor="let detailDish of eventModel.dishDetails; let i = index">
             <td style="width: 5%;">
               <ejs-checkbox [(ngModel)]="detailDish.selected"></ejs-checkbox>
             </td>
@@ -156,7 +200,7 @@
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calDishGrandTotal()" class="e-field e-input none-border"
-                     [(ngModel)]='detailDish.quantityValue' [min]="0"/>
+                     [(ngModel)]='detailDish.quantityValue' [min]="1"/>
             </td>
             <td style="width: 25%;">
               <span
@@ -195,7 +239,7 @@
           </tr>
           </thead>
           <tbody style="height: 245px">
-          <tr *ngFor="let detailThirdparty of thirdpartyDetails; let i = index">
+          <tr *ngFor="let detailThirdparty of eventModel.thirdpartyDetails; let i = index">
             <td style="width: 5%;">
               <ejs-checkbox [(ngModel)]="detailThirdparty.selected"></ejs-checkbox>
             </td>
@@ -211,7 +255,7 @@
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calThirdpartyGrandTotal()" class="e-field e-input none-border"
-                     [(ngModel)]='detailThirdparty.quantityValue' [min]="0"/>
+                     [(ngModel)]='detailThirdparty.quantityValue' [min]="1" [max]="1"/>
             </td>
             <td style="width: 25%;">
               <span
@@ -230,7 +274,7 @@
   </ng-template>
   <ng-template #editorFooterTemplate>
     <div id="right-button">
-      <button id="Cancel" class="e-control e-btn e-second-button" data-ripple="true">Cancel</button>
+      <button *ngIf="currentPage == 1" id="Cancel" class="e-control e-btn e-second-button" data-ripple="true" (click)="this.scheduleObj?.closeEditor();">Cancel</button>
       <button *ngIf="currentPage > 1" (click)="previousPage()" class="e-control e-btn e-second-button"
               data-ripple="true">Back
       </button>
@@ -238,7 +282,7 @@
               class="e-control e-btn e-primary" data-ripple="true">Next
       </button>
       <button id="Save" [ngClass]="{'hidden': currentPage !== 4}" style="background-color: #321fdb;"
-              class="e-control e-btn e-primary" data-ripple="true">Save
+              class="e-control e-btn e-primary" data-ripple="true" (click)="onSaveButtonClick()">Save
       </button>
     </div>
   </ng-template>

@@ -11,8 +11,8 @@
       </c-col>
     </c-card-header>
     <c-card-body [ngClass]="{'no-header': !showHeader}" class="custom-card-body">
-      <span *ngIf="totalRecords == 0" style="text-align: center; font-style: italic;">Empty data</span>
       <div class="table-container">
+        <span *ngIf="totalRecords == 0" style="text-align: center;display: flex;font-style: italic;justify-content: center;align-items: center;height: 66px;margin-bottom: -48px;">Empty data</span>
         <table id="listTable" [ngClass]="{'hidden': !showTable}" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="announceSortChange($event)">
           <!-- Dynamic Column Definition -->
           <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">

@@ -77,3 +77,75 @@
   border: #ddd 1px solid;
   border-radius: 10px;
 }
+::ng-deep .schedule-cell-dimension.e-schedule .e-vertical-view .e-time-cells-wrap table td,
+::ng-deep .schedule-cell-dimension.e-schedule .e-vertical-view .e-work-cells {
+  height: 50px;
+}
+
+::ng-deep .schedule-cell-dimension {
+  border-radius: 1rem;
+  margin-bottom: 10px
+}
+::ng-deep .schedule-cell-dimension .e-toolbar-items.e-tbar-pos {
+  background-color: white;
+}
+::ng-deep .schedule-cell-dimension .e-tbar-btn-text {
+  font-weight: bold !important;
+}
+::ng-deep .schedule-cell-dimension .e-toolbar-items.e-tbar-pos .e-toolbar-right .e-toolbar-item .e-tbar-btn {
+  background-color: white;
+}
+::ng-deep .schedule-cell-dimension .e-toolbar .e-toolbar-item .e-tbar-btn {
+  background-color: white;
+}
+::ng-deep .schedule-cell-dimension .e-active-view .e-tbar-btn-text, .e-schedule .e-schedule-toolbar .e-active-view .e-icons {
+  color: #321fdb !important;
+}
+::ng-deep .schedule-cell-dimension .e-timeline-view .e-date-header-wrap table td.e-current-day, .e-schedule .e-timeline-month-view .e-date-header-wrap table td.e-current-day {
+  color: #321fdb !important;
+}
+::ng-deep .schedule-cell-dimension .e-vertical-view .e-header-cells.e-current-day {
+  color: #321fdb !important;
+  font-weight: bold;
+}
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-event-popup .e-popup-header {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+}
+::ng-deep .schedule-cell-dimension .e-popup.e-popup-open {
+  border-radius: 1rem
+}
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-cell-popup .e-header-icon-wrapper,
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-event-popup .e-header-icon-wrapper {
+  display: grid;
+  grid-template-columns: 90% 10%;
+}
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-event-popup .e-popup-header .e-subject-wrap {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-bottom: 0px;
+}
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-event-popup .e-popup-footer {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding-right: 11px;
+}
+.popup-footer-button {
+  height: 28px;
+  padding: 0px;
+  font-size: 14px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.btn-container {
+  display: flex;
+  gap: 5px;
+}
+.e-event-content {
+  font-size: 14px;
+}
+::ng-deep .schedule-cell-dimension .e-quick-popup-wrapper .e-event-popup .e-popup-content {
+  padding-bottom: 0px;
+}
