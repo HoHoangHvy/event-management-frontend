@@ -271,8 +271,8 @@ export class EventBookingComponent {
       return {
         Id: item.id,
         Subject: item.name + " - " + item.hallName,
-        StartTime: (new Date(item.startDate)).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }),
-        EndTime: (new Date(item.endDate)).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }),
+        StartTime: new Date(item.startDate),
+        EndTime: new Date(item.endDate),
         CategoryColor: this.statusColor[item.status],
         Status: item.status,
         CreateBy: item.createdByName,
