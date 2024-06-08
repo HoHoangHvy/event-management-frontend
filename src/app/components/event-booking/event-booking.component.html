@@ -37,8 +37,9 @@
   <ng-template #quickInfoTemplatesFooter let-data>
     <div *ngIf="data.elementType == 'event'" class="e-cell-footer">
       <div class="btn-container">
-        <button cButton class="popup-footer-button" color="secondary" title="Edit event" (click)="onDetailsClick(data)">Edit</button>
-        <button cButton class="popup-footer-button" title="Approve" (click)="onAddClick($event)">Approve</button>
+        <button cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Edit event" (click)="onDetailsClick(data)">Edit</button>
+        <button *ngIf="data.Status == 'Wait for approval'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Approve" (click)="onAddClick($event)">Approve</button>
+        <button *ngIf="data.Status == 'Draft'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Create Contract" (click)="onCreateContract(data)">Create Contract</button>
       </div>
     </div>
   </ng-template>
@@ -142,7 +143,7 @@
               </ejs-dropdownlist>
             </td>
             <td style="width: 30%;">
-              <span id="price{{i}}">{{ detailFacility.price | currency:'VND':'symbol':'1.2-2' }}</span>
+              <span id="price{{i}}">{{ detailFacility.price | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calFacilityGrandTotal()" class="e-field e-input none-border"
@@ -150,14 +151,14 @@
             </td>
             <td style="width: 25%;">
               <span
-                id="totalValue{{i}}">{{ detailFacility.price * detailFacility.quantityValue | currency:'VND':'symbol':'1.2-2' }}</span>
+                id="totalValue{{i}}">{{ detailFacility.price * detailFacility.quantityValue | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
           </tr>
           </tbody>
           <tfoot class="custom-footer">
           <tr>
             <td colspan="4" style="text-align: right; font-weight: bold">Grand total</td>
-            <td>{{ totalFacilityValue | currency:'VND':'symbol':'1.2-2' }}</td>
+            <td>{{ totalFacilityValue | currency:'VND':'symbol':'1.0-0' }}</td>
           </tfoot>
         </table>
       </div>
@@ -196,7 +197,7 @@
               </ejs-dropdownlist>
             </td>
             <td style="width: 30%;">
-              <span id="price{{i}}">{{ detailDish.price | currency:'VND':'symbol':'1.2-2' }}</span>
+              <span id="price{{i}}">{{ detailDish.price | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calDishGrandTotal()" class="e-field e-input none-border"
@@ -204,14 +205,14 @@
             </td>
             <td style="width: 25%;">
               <span
-                id="totalValue{{i}}">{{ detailDish.price * detailDish.quantityValue | currency:'VND':'symbol':'1.2-2' }}</span>
+                id="totalValue{{i}}">{{ detailDish.price * detailDish.quantityValue | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
           </tr>
           </tbody>
           <tfoot class="custom-footer">
           <tr>
             <td colspan="4" style="text-align: right; font-weight: bold">Grand total</td>
-            <td>{{ totalDishValue | currency:'VND':'symbol':'1.2-2' }}</td>
+            <td>{{ totalDishValue | currency:'VND':'symbol':'1.0-0' }}</td>
           </tfoot>
         </table>
       </div>
@@ -251,7 +252,7 @@
               </ejs-dropdownlist>
             </td>
             <td style="width: 30%;">
-              <span id="price{{i}}">{{ detailThirdparty.price | currency:'VND':'symbol':'1.2-2' }}</span>
+              <span id="price{{i}}">{{ detailThirdparty.price | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
             <td style="width: 10%; padding-bottom: 0px;">
               <input type="number" (change)="calThirdpartyGrandTotal()" class="e-field e-input none-border"
@@ -259,14 +260,14 @@
             </td>
             <td style="width: 25%;">
               <span
-                id="totalValue{{i}}">{{ detailThirdparty.price * detailThirdparty.quantityValue | currency:'VND':'symbol':'1.2-2' }}</span>
+                id="totalValue{{i}}">{{ detailThirdparty.price * detailThirdparty.quantityValue | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
           </tr>
           </tbody>
           <tfoot class="custom-footer">
           <tr>
             <td colspan="4" style="text-align: right; font-weight: bold">Grand total</td>
-            <td>{{ totalThirdpartyValue | currency:'VND':'symbol':'1.2-2' }}</td>
+            <td>{{ totalThirdpartyValue | currency:'VND':'symbol':'1.0-0' }}</td>
           </tfoot>
         </table>
       </div>

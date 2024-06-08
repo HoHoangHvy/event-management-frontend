@@ -56,12 +56,19 @@ export class RecordViewComponent {
       rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
       acceptButtonStyleClass: 'p-button-primary p-button-sm',
       accept: () => {
+        if(this.moduleName == 'Payments') {
+          this.detailObject.status = 'Paid';
+        }
         this.detailService.updateDetailData(this.moduleName?.toLowerCase() || '', this.recordId, this.detailObject).subscribe((res: any) => {
           this.messageService.add({severity:'success', summary:'Success', detail:'Successfully updated!'});
           if(this.moduleName == 'Requestdepartments') {
             this.detailObject.departmentId = res.data.departmentId;
             this.detailObject.departmentName = res.data.departmentName
           }
+          this.detailObject.show = false;
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000)
         });
       },
       reject: () => {

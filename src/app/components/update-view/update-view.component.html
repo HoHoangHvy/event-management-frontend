@@ -7,18 +7,18 @@
       <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
         <div *ngIf="col.isText">
           <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}</label>
-          <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]" [disabled]="col.isDisabled"/>
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]" [readonly]="col.isDisabled"/>
         </div>
         <div *ngIf="col.isSelect">
           <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}</label>
-          <select cFormControl cSelect [(ngModel)]="detailObject[col.name]" id="select{{ col.name }}" name="{{col.name}}" [disabled]="col.isDisabled">
+          <select cFormControl cSelect [(ngModel)]="detailObject[col.name]" id="select{{ col.name }}" name="{{col.name}}">
             <option *ngFor="let option of col.options" [value]="option.value">{{ option.label }}</option>
           </select>
         </div>
         <div *ngIf="col.isDate">
           <label cLabel for="date{{ col.name }}">{{ labelList[col.name] }}</label>
           <div class="date-picker-container">
-            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="detailObject[col.name]" name="{{ col.name }}" [value]="detailObject[col.name]" [disabled]="col.isDisabled">
+            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="detailObject[col.name]" name="{{ col.name }}" [value]="detailObject[col.name]" [readonly]="col.isDisabled">
             <mat-datepicker-toggle matIconSuffix [for]="picker" class="date-picker-toggle"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </div>
@@ -189,6 +189,125 @@
             </c-card-body>
           </c-card>
         </div>
+
+        <div *ngIf="moduleName === 'Contracts'">
+          <div *ngIf="moduleName === 'Contracts'">
+            <div class="contract-summary" style="font-size: 14px; padding-bottom: 13px;">
+              <div style="font-weight: bold; font-size: 15px">Contract summary</div>
+              <div>Net total: {{detailObject['netValue']}}</div>
+              <div>Tax: {{detailObject['taxValue']}}</div>
+              <div>Grand total: {{detailObject['totalValue']}}</div>
+              <div style="margin-top: 5px; padding-top: 5px; border-top: 1px solid #b1b7c1; width: 160px">Sum paid: {{detailObject['sumPaid']}}</div>
+            </div>
+          </div>
+          <c-card>
+            <div class="history-header">
+              <span class="history-title">Payment Details</span>
+              <div class="button-group">
+                <button cButton class="pull-right" *ngIf="showHistoryTable" (click)="showHistoryTable = false">Hide</button>
+                <button cButton class="pull-right" *ngIf="!showHistoryTable" (click)="showHistoryTable = true">Show</button>
+              </div>
+            </div>
+            <c-card-body *ngIf="showHistoryTable">
+              <table cTable>
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Payment ID</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Method</th>
+                  <th scope="col">Confirm By</th>
+                  <th scope="col">Date Entered</th>
+                  <th scope="col">Payment Date</th>
+                  <th scope="col" *ngIf="canDoAction"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of paymentList; let i = index" class="history-row">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.status }}</td>
+                  <td>{{ item.value }}</td>
+                  <td>{{ item.type }}</td>
+                  <td>{{ item.paymentMethod }}</td>
+                  <td>{{ item.confirmedByName }}</td>
+                  <td>{{ item.dateEntered }}</td>
+                  <td>{{ item.paymentDate }}</td>
+                  <td *ngIf="canDoAction">
+                    <c-dropdown>
+                      <button cButton cDropdownToggle color="primary" style="padding: 8px;padding-top: 0px;padding-bottom: 0px;">
+                      </button>
+                      <ul cDropdownMenu>
+                        <li *ngIf="item.status == 'Unpaid' && showPayAt == i"><div cDropdownItem (click)="paymentList[i].show = true">Pay</div></li>
+                        <li *ngIf="item.status == 'Unpaid' && showPayAt != i"><div cDropdownItem>Please paid {{needToPaidPayment}} before</div></li>
+                        <li *ngIf="item.status == 'Paid'"><div cDropdownItem (click)="voidPayment(paymentList[i].id, paymentList[i]);">Void</div></li>
+                      </ul>
+                      <p-dialog header="Confirm paid" [modal]="true" [(visible)]="paymentList[i].show" [style]="{ width: '25rem' }">
+                        <app-record-view
+                          [moduleName]="'payments'"
+                          [detailObject]="paymentList[i]"
+                          [recordId]="paymentList[i].id"
+                        ></app-record-view>
+                      </p-dialog>
+                    </c-dropdown>
+                  </td>
+                </tr>
+                <p-dialog header="Forward request" [modal]="true" [(visible)]="visibleForwardingDialog" [style]="{ width: '50rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <c-col>
+                        <label for="department" class="font-semibold w-6rem">Department</label>
+                        <select cSelect id="department" [(ngModel)]="departmentId" name="toDepartment">
+                          <option *ngFor="let department of departments" [value]="department.value">{{ department.label }}</option>
+                        </select>
+                      </c-col>
+                      <c-col>
+                        <label for="noteResponse" class="font-semibold w-6rem">Note</label>
+                        <input cFormControl id="noteResponse" class="flex-auto" autocomplete="off" [(ngModel)]="note" name="note"/>
+                      </c-col>
+                      <c-col [md]="12">
+                        <label for="response" class="font-semibold w-6rem">Response - For employee</label>
+                        <input cFormControl id="response" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="response"/>
+                      </c-col>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleForwardingDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('forward')">Save</button>
+                  </div>
+                </p-dialog>
+                <p-dialog header="Response" [modal]="true" [(visible)]="visibleApproveResponseDialog" [style]="{ width: '25rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <label for="approveResponse" class="font-semibold w-6rem">Approve Response</label>
+                      <input cFormControl id="approveResponse" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="rejectReason"/>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleApproveResponseDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('approve')">Save</button>
+                  </div>
+                </p-dialog>
+                <p-dialog header="Reject reason" [modal]="true" [(visible)]="visibleRejectResponseDialog" [style]="{ width: '25rem' }">
+                  <div class="flex align-items-center gap-3 mb-3">
+                    <form cForm class="row g-3">
+                      <label for="rejectResponse" class="font-semibold w-6rem">Reject reason</label>
+                      <input cFormControl id="rejectResponse" class="flex-auto" autocomplete="off" [(ngModel)]="response" name="rejectReason"/>
+                    </form>
+                  </div>
+                  <div class="flex justify-content-right gap-2" style="justify-content: right; display: flex;">
+                    <button cButton color="light" severity="secondary" (click)="visibleRejectResponseDialog = false">Cancel</button>
+                    <button cButton color="primary" (click)="saveResponseInfo('reject')">Save</button>
+                  </div>
+                </p-dialog>
+                </tbody>
+              </table>
+            </c-card-body>
+          </c-card>
+        </div>
+
       </c-col>
       <c-col [md]="12">
         <button *ngIf="((!isApproved && !showApproveButton && !isRejected) || isAdmin) && canUpsert" cButton color="primary" (click)="saveInfo()">Save</button>

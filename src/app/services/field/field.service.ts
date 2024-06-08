@@ -666,13 +666,117 @@ export class FieldService {
         ]
       },
     ],
+    contracts: [
+      {
+        name: 'name',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        placeHolder: 'Auto generate',
+        isRequired: false,
+        isDisabled: true,
+        colSpan: '3'
+      },
+      {
+        name: 'eventId',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        colSpan: '3',
+        isDisabled: false,
+        options: []
+      },
+      {
+        name: 'status',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        placeHolder: 'Draft',
+        isRequired: false,
+        isDisabled: true,
+        colSpan: '3',
+      },
+      {
+        name: 'taxable',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '3',
+        options: [
+          { value: true, label: "Taxable (10%)" },
+          { value: false, label: "Non-Taxable (KCT)" }
+        ]
+      },
+      {
+        name: 'expirationDate',
+        isSelect: false,
+        isDate: true,
+        isText: false,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '6',
+        options: []
+      },
+      {
+        name: 'paymentTerm',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '6',
+        options: [
+          { value: "1", label: "100%" },
+          { value: "2", label: "Deposit + Rest" },
+          { value: "3", label: "Deposit + 50% Rest + 50% Rest" }
+        ]
+      },
+      {
+        name: 'terms',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '12'
+      },
+    ],
+    payments: [
+      {
+        name: 'paymentMethod',
+        isSelect: true,
+        isDate: false,
+        isText: false,
+        isRequired: true,
+        isDisabled: false,
+        options: [
+          {value: "Cash", label: "Cash"},
+          {value: "Bank Transfer", label: "Bank Transfer"},
+        ],
+        colSpan: '12'
+      },
+      {
+        name: 'value',
+        isSelect: false,
+        isDate: false,
+        isText: true,
+        isRequired: false,
+        isDisabled: true,
+        options: [],
+        colSpan: '12'
+      },
+
+    ],
   };
 
   displayedColumns: any;
   constructor(private userService: UserService, private detailService: DetailService, private route: ActivatedRoute) { }
 
   private isNeedRelatedOptions(moduleName: string): boolean {
-    let moduleList = ['employees', 'events', 'users', 'requestdepartments'];
+    let moduleList = ['employees', 'events', 'users', 'requestdepartments', 'contracts'];
     return moduleList.includes(moduleName);
   }
 
@@ -711,7 +815,6 @@ export class FieldService {
       return this.displayedColumns;
     });
   }
-
   getColumnsForListView(moduleName: string): any {
     const columns: any = {
       employees: ['name', 'phone', 'empLevel', 'departmentName', 'gender', 'status', 'dob', 'startDate', 'email'],
@@ -726,6 +829,8 @@ export class FieldService {
       thirdparties: ['name', 'supplier', 'cost', 'price', 'type', 'dateEntered'],
       halls: ['name', 'scale', 'location', 'dateEntered', 'inUse'],
       customers: ['name', 'phone', 'email', 'type', 'dob', 'dateEntered'],
+      contracts: ['name', 'status', 'eventName', 'totalValue', 'sumPaid','expirationDate', 'dateEntered'],
+      payments: ['name', 'status', 'type', 'value', 'dateEntered'],
     };
     return columns[moduleName] || [];
   }

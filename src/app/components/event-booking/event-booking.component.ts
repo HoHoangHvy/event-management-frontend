@@ -13,6 +13,7 @@ import { isNullOrUndefined } from '@syncfusion/ej2-base';
 import {CreateService} from "../../services/crud/create/create.service";
 import {MessageService} from "primeng/api";
 import {UserService} from "../../services/user/user.service";
+import {Router} from "@angular/router";
 interface OptionObject {
   text: string;
   id: string;
@@ -115,6 +116,7 @@ export class EventBookingComponent {
   public scheduleObj?: ScheduleComponent;
   constructor(private http: HttpClient,
               private listService: ListService,
+              private router: Router,
               private messageService: MessageService,
               private createService: CreateService) {}
   @ViewChild('editorHeader') editorHeader: ElementRef | undefined;
@@ -278,6 +280,9 @@ export class EventBookingComponent {
         CreateBy: item.createdByName,
       }
     })
+  }
+  onCreateContract(data: any){
+    this.router.navigateByUrl('/base/create/contracts')
   }
   public startDateParser(data: string) {
     if (isNullOrUndefined(this.startDate) && !isNullOrUndefined(data)) {

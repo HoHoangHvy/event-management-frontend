@@ -8,6 +8,7 @@ import {FieldService} from "../../services/field/field.service";
 import {LabelService} from "../../services/label/label.service";
 import {AuthServiceService} from "../../services/Auth/auth-service.service";
 import {User} from "../../models/user/user";
+import {sortBy} from "lodash-es";
 
 @Component({
   selector: 'app-update-view',
@@ -38,9 +39,13 @@ export class UpdateViewComponent {
   isRejected: boolean = false;
   isPending: boolean = false;
   canDoAction: boolean = false;
+  visiblePayDialog: boolean = false;
   showHistoryTable: boolean = true;
   currentManagerDepartment: string = 'true';
   historyList: any;
+  paymentList: any;
+  showPayAt: number = 0;
+  needToPaidPayment: string = '';
 
   async ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.route.snapshot.paramMap.get('moduleName'));
@@ -71,6 +76,21 @@ export class UpdateViewComponent {
         break;
       case 'Requests':
         this.historyList = object.requestDepartments;
+        break;
+      case 'Contracts':
+        this.paymentList = object.payments.sort((a: { dateEntered: string | number | Date; }, b: { dateEntered: string | number | Date; }) => new Date(a.dateEntered).getTime() - new Date(b.dateEntered).getTime() );
+        this.showPayAt = object.payments.filter((item: any) => item.status == 'Paid').length;
+        let haveDeposited = object.payments.filter((item: any) => item.type == 'Deposit' && item.status == 'Unpaid').length;
+        if(haveDeposited) {
+          this.showPayAt = object.payments.findIndex((item: any) => item.type == 'Deposit');
+        }
+        let leftOne = object.payments.filter((item: any) => item.status == 'Unpaid').length == 1;
+        if(leftOne) {
+          this.showPayAt = object.payments.findIndex((item: any) => item.status == 'Unpaid');
+        }
+        console.log(this.showPayAt, object.payments[this.showPayAt])
+        this.needToPaidPayment = object.payments[this.showPayAt].name;
+        this.canDoAction = this.authService.checkUserPermission('Payments', 'UPSERT');
         break;
     }
   }
@@ -105,9 +125,15 @@ export class UpdateViewComponent {
       rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
       acceptButtonStyleClass: 'p-button-primary p-button-sm',
       accept: () => {
-        this.detailService.deleteDetailData(this.route.snapshot.paramMap.get('moduleName'), this.route.snapshot.paramMap.get('id')).subscribe((res: any) => {
+        this.detailService.deleteDetailData(this.route.snapshot.paramMap.get('moduleName'), this.route.snapshot.paramMap.get('id')).subscribe(
+          (res: any) => {
           this.messageService.add({severity:'success', summary:'Success', detail:'Successfully deleted!'});
           this.router.navigateByUrl('base/list/' + this.route.snapshot.paramMap.get('moduleName'));
+        },
+        (errorCatcher) => {
+          if(errorCatcher.error.code == 1013) {
+            this.messageService.add({severity:'error', summary:'Error', detail:errorCatcher.error.message});
+          }
         });
       },
       reject: () => {
@@ -209,6 +235,25 @@ export class UpdateViewComponent {
         }
       });
     }
+  }
+  voidPayment(id: string, model: any) {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to void this payment?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-sm p-button-outlined ',
+      acceptButtonStyleClass: 'p-button-primary p-button-sm',
+      accept: () => {
+        model.status = 'Unpaid';
+        this.detailService.updateDetailData('payments', id, model).subscribe((res: any) => {
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Successfully Void!'});
+          setTimeout(function() {window.location.reload()}, 2000);
+        });
+      },
+      reject: () => {
+      }
+    });
+
   }
   editHistory(item: any){
     this.router.navigateByUrl(`/base/detail/requests/${item.id}`);

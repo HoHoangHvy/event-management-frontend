@@ -4,6 +4,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {FieldService} from "../../services/field/field.service";
 import {LabelService} from "../../services/label/label.service";
 import {CreateService} from "../../services/crud/create/create.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-create-view',
@@ -18,16 +19,21 @@ export class CreateViewComponent {
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
               private fieldService: FieldService,
+              private http: HttpClient,
               private labelService: LabelService) { }
   moduleName: string | null = '';
   displayedColumns: any;
   labelList: any = {};
   createObject: { [key: string]: any } = {};
   validated = false;
+  eventDetails: any;
   async ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.route.snapshot.paramMap.get('moduleName'));
     try {
       this.displayedColumns = await this.fieldService.getFieldList(this.moduleName.toLowerCase());
+      if(this.moduleName === 'Contracts') {
+        await this.fetchEventDetails();
+      }
       this.labelList = this.labelService.getFieldLabel(this.moduleName) || {};
       this.displayedColumns.forEach((column: any) => {
         this.createObject[column.name] = '';
@@ -39,7 +45,15 @@ export class CreateViewComponent {
       console.error('Error fetching columns:', error);
     }
   }
-
+  async fetchEventDetails() {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
+    })
+    return this.http.get('http://localhost:8080/api/option/events', {headers}).subscribe((res: any) => {
+      this.eventDetails = res.data;
+      this.taxValue = 0.1;
+    });
+  }
   capitalizeFirstLetter(name: string | null): string {
     if (!name) return '';
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -123,6 +137,14 @@ export class CreateViewComponent {
     if (column.isSelect && !this.createObject[column.name]) return true;
     if (column.isText && !this.createObject[column.name]) return true;
     return false;
+  }
+  netValue: number = 0;
+  taxValue: number = 0;
+  grandTotal: number = 0;
+  handleSelectChange(name: any, model: any) {
+    if(name == 'taxable') {
+      this.taxValue = model == "true" ? 0.1 : 0;
+    }
   }
   protected readonly String = String;
 }

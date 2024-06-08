@@ -11,18 +11,18 @@
       <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
         <div *ngIf="col.isText">
           <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
-          <input cFormControl id="input{{ col.name }}" [(ngModel)]="createObject[col.name]" name="{{col.name}}" [value]="createObject[col.name]" [disabled]="col.isDisabled" [required]="col.isRequired" />
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="createObject[col.name]" name="{{col.name}}" [value]="createObject[col.name]" [placeholder]="col.placeHolder || ''" [readonly]="col.isDisabled" [required]="col.isRequired" />
         </div>
         <div *ngIf="col.isSelect">
           <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
-          <select cFormControl cSelect [(ngModel)]="createObject[col.name]" id="select{{ col.name }}" name="{{col.name}}" [disabled]="col.isDisabled">
+          <select cFormControl cSelect [(ngModel)]="createObject[col.name]" id="select{{ col.name }}" name="{{col.name}}" (change)="handleSelectChange(col.name, createObject[col.name])">
             <option *ngFor="let option of col.options" [value]="option.value">{{ option.label }}</option>
           </select>
         </div>
         <div *ngIf="col.isDate">
           <label cLabel for="date{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
           <div class="date-picker-container">
-            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="createObject[col.name]" name="{{ col.name }}" [value]="createObject[col.name]" [disabled]="col.isDisabled" [required]="col.isRequired" >
+            <input cFormControl id="input{{ col.name }}" [matDatepicker]="picker" [(ngModel)]="createObject[col.name]" name="{{ col.name }}" [value]="createObject[col.name]" [readonly]="col.isDisabled" [required]="col.isRequired" >
             <mat-datepicker-toggle matIconSuffix [for]="picker" class="date-picker-toggle"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </div>
@@ -33,6 +33,13 @@
           <app-permission
             [permissionModel] = "permissionModel"
           ></app-permission>
+        </div>
+        <div *ngIf="moduleName === 'Contracts'">
+          <div class="contract-summary">
+            <div>Net total: {{eventDetails[createObject['eventId']]['totalAmount'] | currency:'VND':'symbol':'1.0-0' }}</div>
+            <div>Tax: {{taxValue * eventDetails[createObject['eventId']]['totalAmount'] | currency:'VND':'symbol':'1.0-0' }}</div>
+            <div>Grand total: {{eventDetails[createObject['eventId']]['totalAmount'] + (taxValue * eventDetails[createObject['eventId']]['totalAmount']) | currency:'VND':'symbol':'1.0-0'}}</div>
+          </div>
         </div>
       </c-col>
       <c-col [md]="12">

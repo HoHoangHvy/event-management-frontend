@@ -118,6 +118,29 @@ export class LabelService {
       phone: 'Phone',
       email: 'Email',
     },
+    contracts: {
+      name: 'Contract name',
+      type: 'Type',
+      eventId: 'Event',
+      expirationDate: 'Expiration Date',
+      dateEntered: 'Date Entered',
+      taxable: 'Taxable',
+      terms: 'Terms',
+      paymentTerm: 'Payment Term',
+      status: 'Status',
+      totalValue: 'Total Value',
+      sumPaid: 'Sum Paid',
+    },
+    payments: {
+      name: 'Payment name',
+      type: 'Type',
+      dateEntered: 'Date Entered',
+      terms: 'Terms',
+      paymentTerm: 'Payment Term',
+      paymentMethod: 'Payment Method',
+      status: 'Status',
+      value: 'Value',
+    },
   }
   getFieldLabel(moduleName: string): any {
     return this.globalLabelList[moduleName.toLowerCase()] || {};
