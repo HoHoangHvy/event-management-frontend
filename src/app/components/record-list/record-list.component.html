@@ -12,13 +12,13 @@
     </c-card-header>
     <c-card-body [ngClass]="{'no-header': !showHeader}" class="custom-card-body">
       <div class="filter-container">
-        <mat-form-field appearance="outline" *ngFor="let empfilter of empFilters">
-          <mat-label>{{ empfilter.label }}</mat-label>
+        <mat-form-field appearance="outline" *ngFor="let filter of filterDefs">
+          <mat-label>{{ filter.label }}</mat-label>
           <mat-select
-            [(value)]="empfilter.defaultValue"
-            (selectionChange)="applyEmpFilter($event, empfilter)"
+            [(value)]="filter.defaultValue"
+            (selectionChange)="applyEmpFilter($event, filter)"
           >
-            <mat-option *ngFor="let op of empfilter.options" [value]="op">
+            <mat-option *ngFor="let op of filter.options" [value]="op">
               {{ op }}
             </mat-option>
           </mat-select>

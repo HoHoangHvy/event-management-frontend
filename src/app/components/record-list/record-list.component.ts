@@ -9,6 +9,7 @@ import {LabelService} from "../../services/label/label.service";
 import {FieldService} from "../../services/field/field.service";
 import {AuthServiceService} from "../../services/Auth/auth-service.service";
 import {MatSelectChange} from "@angular/material/select";
+import {FilterServiceService} from "../../services/filter-service/filter-service.service";
 
 interface EmpFilter {
   label:string;
@@ -42,7 +43,7 @@ export class RecordListComponent implements OnInit {
   showTable: boolean = true;
   canCreate: boolean = true;
   labelList: any = {};
-  empFilters: EmpFilter[]=[];
+  filterDefs: EmpFilter[]=[];
   defaultValue = "All";
   filterDictionary= new Map<string,string>();
 
@@ -57,15 +58,18 @@ export class RecordListComponent implements OnInit {
               private _liveAnnouncer: LiveAnnouncer,
               private router: Router,
               private labelService: LabelService,
+              private filterDefinitionService: FilterServiceService,
               private fieldService: FieldService,
               private authService: AuthServiceService) { }
 
   ngOnInit() {
-    this.empFilters.push({label: 'Gender',name:'gender',options:this.genders,defaultValue:this.defaultValue});
-    this.empFilters.push({label: 'Level',name:'empLevel',options:this.empLevel,defaultValue:this.defaultValue});
-    this.empFilters.push({label: 'Status',name:'status',options:this.status,defaultValue:this.defaultValue});
-
     this.moduleName = this.capitalizeFirstLetter(this.moduleName);
+    this.filterDefinitionService.getFilterDefinitionsMock(this.moduleName.toLowerCase()).subscribe((filters) => {
+      this.filterDefs = filters;
+      this.filterDefs.forEach(filter => {
+        this.filterDictionary.set(filter.name, filter.defaultValue);
+      });
+    });
     this.displayedColumns = this.fieldService.getColumnsForListView(this.moduleName.toLowerCase());
     this.labelList = this.labelService.getFieldLabel(this.moduleName);
     this.canCreate = this.authService.checkUserPermission(this.moduleName, 'UPSERT');
