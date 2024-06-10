@@ -39,13 +39,14 @@ export class UpdateViewComponent {
   isRejected: boolean = false;
   isPending: boolean = false;
   canDoAction: boolean = false;
-  visiblePayDialog: boolean = false;
   showHistoryTable: boolean = true;
   currentManagerDepartment: string = 'true';
   historyList: any;
   paymentList: any;
   showPayAt: number = 0;
+  showVoidAt: number = 0;
   needToPaidPayment: string = '';
+  needToVoidPayment: string = '';
 
   async ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.route.snapshot.paramMap.get('moduleName'));
@@ -80,6 +81,7 @@ export class UpdateViewComponent {
       case 'Contracts':
         this.paymentList = object.payments.sort((a: { dateEntered: string | number | Date; }, b: { dateEntered: string | number | Date; }) => new Date(a.dateEntered).getTime() - new Date(b.dateEntered).getTime() );
         this.showPayAt = object.payments.filter((item: any) => item.status == 'Paid').length;
+        this.showVoidAt = object.payments.filter((item: any) => item.status == 'Paid').length - 1;
         let haveDeposited = object.payments.filter((item: any) => item.type == 'Deposit' && item.status == 'Unpaid').length;
         if(haveDeposited) {
           this.showPayAt = object.payments.findIndex((item: any) => item.type == 'Deposit');
@@ -88,9 +90,9 @@ export class UpdateViewComponent {
         if(leftOne) {
           this.showPayAt = object.payments.findIndex((item: any) => item.status == 'Unpaid');
         }
-        console.log(this.showPayAt, object.payments[this.showPayAt])
-        this.needToPaidPayment = object.payments[this.showPayAt].name;
+        this.needToVoidPayment = object.payments[this.showVoidAt].name;
         this.canDoAction = this.authService.checkUserPermission('Payments', 'UPSERT');
+        this.needToPaidPayment = object.payments[this.showPayAt].name;
         break;
     }
   }

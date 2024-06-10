@@ -11,7 +11,7 @@
       <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
         <div *ngIf="col.isText">
           <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
-          <input cFormControl id="input{{ col.name }}" [(ngModel)]="createObject[col.name]" name="{{col.name}}" [value]="createObject[col.name]" [placeholder]="col.placeHolder || ''" [readonly]="col.isDisabled" [required]="col.isRequired" />
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="createObject[col.name]" name="{{col.name}}" (change)="handleTextChange(col.name, createObject[col.name])" [value]="createObject[col.name]" [placeholder]="col.placeHolder || ''" [readonly]="col.isDisabled" [required]="col.isRequired" />
         </div>
         <div *ngIf="col.isSelect">
           <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}<span *ngIf="col.isRequired" style="color: red">*</span></label>
@@ -38,7 +38,7 @@
           <div class="contract-summary">
             <div>Net total: {{eventDetails[createObject['eventId']]['totalAmount'] | currency:'VND':'symbol':'1.0-0' }}</div>
             <div>Tax: {{taxValue * eventDetails[createObject['eventId']]['totalAmount'] | currency:'VND':'symbol':'1.0-0' }}</div>
-            <div>Grand total: {{eventDetails[createObject['eventId']]['totalAmount'] + (taxValue * eventDetails[createObject['eventId']]['totalAmount']) | currency:'VND':'symbol':'1.0-0'}}</div>
+            <div>Grand total: {{eventDetails[createObject['eventId']]['totalAmount'] + (taxValue * eventDetails[createObject['eventId']]['totalAmount']) - discountValue | currency:'VND':'symbol':'1.0-0'}} - Discount : {{discountValue  | currency:'VND':'symbol':'1.0-0'}}</div>
           </div>
         </div>
       </c-col>

@@ -69,6 +69,7 @@ export class NotificationComponent {
           break;
       }
     } else if(type == 'Request') url = '/base/detail/requests/' + id;
+    else if(type == 'Event') url = '/base/booking-event';
     this.router.navigate([url], { queryParams: { activeIndex:  index} });
 
   }

@@ -38,8 +38,9 @@
     <div *ngIf="data.elementType == 'event'" class="e-cell-footer">
       <div class="btn-container">
         <button cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Edit event" (click)="onDetailsClick(data)">Edit</button>
-        <button *ngIf="data.Status == 'Wait for approval'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Approve" (click)="onAddClick($event)">Approve</button>
+        <button *ngIf="data.Status == 'Wait for approval'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Approve" (click)="onApproveClick(data)">Approve</button>
         <button *ngIf="data.Status == 'Draft'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Create Contract" (click)="onCreateContract(data)">Create Contract</button>
+        <button *ngIf="data.Status !== 'Draft'" cButton style="background: {{data.CategoryColor}}; border: none" class="popup-footer-button" title="Create Contract" (click)="onViewContract(data)">View Contract</button>
       </div>
     </div>
   </ng-template>
@@ -125,10 +126,10 @@
             <th style="width: 5%; padding-right: 8px;">
               <ejs-checkbox [(ngModel)]="checkAll" (change)="toggleCheckAll()"></ejs-checkbox>
             </th>
-            <th style="width: 30%;">Facility</th>
-            <th style="width: 30%;">Price</th>
-            <th style="width: 10%;">Quantity</th>
-            <th style="width: 25%;">Total value</th>
+            <th style="width: 60%;">Facility</th>
+            <th style="width: 15%;">Price</th>
+            <th style="width: 5%;">Quantity</th>
+            <th style="width: 15%;">Total value</th>
           </tr>
           </thead>
           <tbody  style="height: 245px">
@@ -136,20 +137,20 @@
             <td style="width: 5%;">
               <ejs-checkbox [(ngModel)]="detailFacility.selected"></ejs-checkbox>
             </td>
-            <td style="width: 30%; padding-bottom: 0px;">
+            <td style="width: 60%; padding-bottom: 0px;">
               <ejs-dropdownlist (change)="onFacilityChange($event, i); calFacilityGrandTotal()" id='SelectField{{i}}'
                                 class="e-field none-border" [(ngModel)]='detailFacility.selectValue'
                                 [dataSource]='facilityData' placeholder='Choose option'>
               </ejs-dropdownlist>
             </td>
-            <td style="width: 30%;">
+            <td style="width: 15%;">
               <span id="price{{i}}">{{ detailFacility.price | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
-            <td style="width: 10%; padding-bottom: 0px;">
+            <td style="width: 5%; padding-bottom: 0px;">
               <input type="number" (change)="calFacilityGrandTotal()" class="e-field e-input none-border"
                      [(ngModel)]='detailFacility.quantityValue' [min]="1"/>
             </td>
-            <td style="width: 25%;">
+            <td style="width: 15%;">
               <span
                 id="totalValue{{i}}">{{ detailFacility.price * detailFacility.quantityValue | currency:'VND':'symbol':'1.0-0' }}</span>
             </td>
@@ -289,3 +290,4 @@
   </ng-template>
 </ejs-schedule>
 <p-toast [life]="5000" key="success"></p-toast>
+<p-confirmDialog></p-confirmDialog>

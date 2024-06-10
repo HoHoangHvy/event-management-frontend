@@ -11,7 +11,7 @@ import { ListService } from "../../services/crud/list/list.service";
 import { ChangeEventArgs } from '@syncfusion/ej2-calendars';
 import { isNullOrUndefined } from '@syncfusion/ej2-base';
 import {CreateService} from "../../services/crud/create/create.service";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {UserService} from "../../services/user/user.service";
 import {Router} from "@angular/router";
 interface OptionObject {
@@ -118,6 +118,7 @@ export class EventBookingComponent {
               private listService: ListService,
               private router: Router,
               private messageService: MessageService,
+              private confirmationService: ConfirmationService,
               private createService: CreateService) {}
   @ViewChild('editorHeader') editorHeader: ElementRef | undefined;
 
@@ -243,8 +244,6 @@ export class EventBookingComponent {
       this.eventSettings = {
         dataSource: this.formatScheduleData(res.data.listData),
       };
-      console.log(this.eventSettings)
-
     });
   }
   statusColor: any = {
@@ -278,11 +277,36 @@ export class EventBookingComponent {
         CategoryColor: this.statusColor[item.status],
         Status: item.status,
         CreateBy: item.createdByName,
+        ContractId: item.contractId,
       }
     })
   }
+  onApproveClick(data: any){
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to approve this event?',
+      header: 'Confirmation',
+      rejectButtonStyleClass: 'p-button-sm',
+      acceptButtonStyleClass: 'p-button-outlined p-button-sm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () =>
+      {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${localStorage.getItem('jwtToken')}`
+        });
+        this.http.put<any>(`http://localhost:8080/api/events/${data.Id}`, {},{ headers }).subscribe(res => {
+            this.messageService.add({ severity: 'success', summary: 'Successfully approved!', detail: 'The event has been approved', key: 'success'});
+            this.fetchEventData();
+        });
+      },
+      reject: () => {
+      }
+    });
+  }
   onCreateContract(data: any){
-    this.router.navigateByUrl('/base/create/contracts')
+    this.router.navigate(['/base/create/contracts'], { queryParams: { eventId:  data.Id} })
+  }
+  onViewContract(data: any){
+    this.router.navigateByUrl(`/base/detail/contracts/${data.ContractId}`)
   }
   public startDateParser(data: string) {
     if (isNullOrUndefined(this.startDate) && !isNullOrUndefined(data)) {
@@ -325,7 +349,6 @@ export class EventBookingComponent {
       this.eventModel.startDate = args.data.StartTime;
       // @ts-ignore
       this.eventModel.endDate =  args.data.EndTime;
-      console.log(this.eventModel)
       this.getOptions();
     }
   }

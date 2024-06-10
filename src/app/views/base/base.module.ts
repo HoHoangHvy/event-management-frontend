@@ -91,9 +91,18 @@ import {NumericTextBoxModule} from "@syncfusion/ej2-angular-inputs";
 import {EventBookingComponent} from "../../components/event-booking/event-booking.component";
 import {CheckBoxModule} from "@syncfusion/ej2-angular-buttons";
 
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+
+
+
 @NgModule({
     imports: [
         ScheduleModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCardModule,
         // CoreUI Modules
         AccordionModule,
         BadgeModule,

@@ -675,15 +675,16 @@ export class FieldService {
         placeHolder: 'Auto generate',
         isRequired: false,
         isDisabled: true,
-        colSpan: '3'
+        colSpan: '4'
       },
       {
         name: 'eventId',
         isSelect: true,
         isDate: false,
         isText: false,
+        isDisabledOnUpdate: true,
         isRequired: false,
-        colSpan: '3',
+        colSpan: '4',
         isDisabled: false,
         options: []
       },
@@ -695,29 +696,31 @@ export class FieldService {
         placeHolder: 'Draft',
         isRequired: false,
         isDisabled: true,
-        colSpan: '3',
+        colSpan: '4',
       },
       {
         name: 'taxable',
         isSelect: true,
         isDate: false,
         isText: false,
+        isDisabledOnUpdate: true,
         isRequired: false,
         isDisabled: false,
-        colSpan: '3',
+        colSpan: '4',
         options: [
           { value: true, label: "Taxable (10%)" },
           { value: false, label: "Non-Taxable (KCT)" }
         ]
       },
       {
-        name: 'expirationDate',
+        name: 'discount',
         isSelect: false,
-        isDate: true,
-        isText: false,
-        isRequired: true,
+        isDate: false,
+        isText: true,
+        isDisabledOnUpdate: true,
+        isRequired: false,
         isDisabled: false,
-        colSpan: '6',
+        colSpan: '4',
         options: []
       },
       {
@@ -727,12 +730,43 @@ export class FieldService {
         isText: false,
         isRequired: true,
         isDisabled: false,
-        colSpan: '6',
+        isDisabledOnUpdate: true,
+        colSpan: '4',
         options: [
           { value: "1", label: "100%" },
           { value: "2", label: "Deposit + Rest" },
           { value: "3", label: "Deposit + 50% Rest + 50% Rest" }
         ]
+      },
+      {
+        name: 'expirationDate',
+        isSelect: false,
+        isDate: true,
+        isText: false,
+        isRequired: true,
+        isDisabled: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'companySignedDate',
+        isSelect: false,
+        isDate: true,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4',
+        options: []
+      },
+      {
+        name: 'customerSignedDate',
+        isSelect: false,
+        isDate: true,
+        isText: false,
+        isRequired: false,
+        isDisabled: false,
+        colSpan: '4',
+        options: []
       },
       {
         name: 'terms',

@@ -11,6 +11,19 @@
       </c-col>
     </c-card-header>
     <c-card-body [ngClass]="{'no-header': !showHeader}" class="custom-card-body">
+      <div class="filter-container">
+        <mat-form-field appearance="outline" *ngFor="let empfilter of empFilters">
+          <mat-label>{{ empfilter.label }}</mat-label>
+          <mat-select
+            [(value)]="empfilter.defaultValue"
+            (selectionChange)="applyEmpFilter($event, empfilter)"
+          >
+            <mat-option *ngFor="let op of empfilter.options" [value]="op">
+              {{ op }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="table-container">
         <span *ngIf="totalRecords == 0" style="text-align: center;display: flex;font-style: italic;justify-content: center;align-items: center;height: 66px;margin-bottom: -48px;">Empty data</span>
         <table id="listTable" [ngClass]="{'hidden': !showTable}" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="announceSortChange($event)">

@@ -27,12 +27,19 @@ export class CreateViewComponent {
   createObject: { [key: string]: any } = {};
   validated = false;
   eventDetails: any;
+  currentEvent: string = '';
   async ngOnInit() {
     this.moduleName = this.capitalizeFirstLetter(this.route.snapshot.paramMap.get('moduleName'));
     try {
       this.displayedColumns = await this.fieldService.getFieldList(this.moduleName.toLowerCase());
       if(this.moduleName === 'Contracts') {
+        let targetColumn = this.displayedColumns[this.displayedColumns.findIndex((item: any) => item.name == 'eventId')];
+        targetColumn.options = targetColumn.options.filter((item: any) => item.status == 'Draft');
         await this.fetchEventDetails();
+        this.route.queryParams.subscribe(params => {
+          this.currentEvent = params['eventId'] || '';
+          if(this.currentEvent !== '') targetColumn.options = this.moveObjectToTop(targetColumn.options, this.currentEvent);
+        });
       }
       this.labelList = this.labelService.getFieldLabel(this.moduleName) || {};
       this.displayedColumns.forEach((column: any) => {
@@ -45,6 +52,19 @@ export class CreateViewComponent {
       console.error('Error fetching columns:', error);
     }
   }
+  moveObjectToTop(array: any[], id: string): any[] {
+    // Tìm chỉ số của đối tượng có giá trị bằng id
+    const index = array.findIndex(item => item.value === id);
+
+    // Nếu tìm thấy, di chuyển đối tượng lên đầu danh sách
+    if (index > -1) {
+      const [item] = array.splice(index, 1); // Xóa đối tượng khỏi vị trí hiện tại
+      array.unshift(item); // Thêm đối tượng vào đầu danh sách
+    }
+
+    return array; // Trả về danh sách đã được sắp xếp lại
+  }
+
   async fetchEventDetails() {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + localStorage.getItem('jwtToken')
@@ -140,10 +160,15 @@ export class CreateViewComponent {
   }
   netValue: number = 0;
   taxValue: number = 0;
-  grandTotal: number = 0;
+  discountValue: number = 0;
   handleSelectChange(name: any, model: any) {
     if(name == 'taxable') {
       this.taxValue = model == "true" ? 0.1 : 0;
+    }
+  }
+  handleTextChange(name: any, model: any) {
+    if(name == 'discount') {
+      this.discountValue = Number(model);
     }
   }
   protected readonly String = String;

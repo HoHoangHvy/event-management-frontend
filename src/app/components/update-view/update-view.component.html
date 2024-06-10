@@ -7,11 +7,11 @@
       <c-col *ngFor="let col of displayedColumns" [md]="col.colSpan">
         <div *ngIf="col.isText">
           <label cLabel for="input{{ col.name }}">{{ labelList[col.name] }}</label>
-          <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]" [readonly]="col.isDisabled"/>
+          <input cFormControl id="input{{ col.name }}" [(ngModel)]="detailObject[col.name]" name="{{col.name}}" [value]="detailObject[col.name]" [readonly]="col.isDisabled || col.isDisabledOnUpdate"/>
         </div>
         <div *ngIf="col.isSelect">
           <label cLabel for="select{{ col.name }}">{{ labelList[col.name] }}</label>
-          <select cFormControl cSelect [(ngModel)]="detailObject[col.name]" id="select{{ col.name }}" name="{{col.name}}">
+          <select cFormControl cSelect [(ngModel)]="detailObject[col.name]" id="select{{ col.name }}" name="{{col.name}}" [disabled]="col.isDisabled || col.isDisabledOnUpdate">
             <option *ngFor="let option of col.options" [value]="option.value">{{ option.label }}</option>
           </select>
         </div>
@@ -242,7 +242,8 @@
                       <ul cDropdownMenu>
                         <li *ngIf="item.status == 'Unpaid' && showPayAt == i"><div cDropdownItem (click)="paymentList[i].show = true">Pay</div></li>
                         <li *ngIf="item.status == 'Unpaid' && showPayAt != i"><div cDropdownItem>Please paid {{needToPaidPayment}} before</div></li>
-                        <li *ngIf="item.status == 'Paid'"><div cDropdownItem (click)="voidPayment(paymentList[i].id, paymentList[i]);">Void</div></li>
+                        <li *ngIf="item.status == 'Paid' && showVoidAt == i"><div cDropdownItem (click)="voidPayment(paymentList[i].id, paymentList[i]);">Void</div></li>
+                        <li *ngIf="item.status == 'Paid' && showVoidAt != i"><div cDropdownItem>Please void {{needToVoidPayment}} before</div></li>
                       </ul>
                       <p-dialog header="Confirm paid" [modal]="true" [(visible)]="paymentList[i].show" [style]="{ width: '25rem' }">
                         <app-record-view

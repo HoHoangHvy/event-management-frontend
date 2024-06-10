@@ -63,3 +63,8 @@ th {
   top: 0; /* Stick the header to the top */
   z-index: 1
 }
+.filter-container {
+  display: flex;
+  gap: 5px;
+}
+
